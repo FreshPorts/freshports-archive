@@ -62,7 +62,7 @@ select commit_log.commit_date				as commit_date_raw,
             echo "read from test failed";
          }
 
-         pg_exec ($database, "end");
+#         pg_exec ($database, "end");
       } else {
          echo "no connection";
       }
