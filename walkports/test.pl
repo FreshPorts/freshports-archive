@@ -2,19 +2,7 @@
 
 use strict;
 
+`sh /home/dan/walkports/fetch-cvs-file.sh category port key`;
 
-
-sub PackageExists($) {                                
-                                                      
-   my $package = shift;
-
-   $package = 'abc';
-
-}
-
-my $packageexists = 'xyz';
-
-print "before $packageexists\n";
-PackageExists($packageexists);
-print "after $packageexists\n";
-
+print "error = " . $! . "\n";
+print "error = " . ($? >> 8) . "\n";
