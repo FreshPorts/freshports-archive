@@ -1,0 +1,103 @@
+# This is a shell archive.  Save it in a file, remove anything before
+# this line, and then unpack it by entering "sh file".  Note, it may
+# create directories; files and directories will be owned by you and
+# have default permissions.
+#
+# This archive contains:
+#
+#	split-by-messageid.awk
+#	report-missing-messageid.sh
+#
+echo x - split-by-messageid.awk
+sed 's/^X//' >split-by-messageid.awk << 'END-of-split-by-messageid.awk'
+X#!/usr/bin/awk -f 
+X#
+X#	(c) 1994-2003, Dirk Meyer, Im Grund 4, 34317 Habichtswald
+X#
+X#
+XBEGIN {
+X	STATE = 0
+X	HEADER = ""
+X}
+X/^From / {
+X	STATE = 1
+X	HEADER = $0
+X	if ( OUTPUT != "" )
+X		close( OUTPUT )
+X	OUTPUT = ""
+X	next
+X}
+X/^Message-I[dD][:]/ {
+X	if ( STATE == 1 ) {
+X		MID = $2
+X		sub( "^<", "", MID )
+X		sub( ">$", "", MID )
+X		print MID
+X		OUTPUT = "test/" MID
+X	}
+X}
+X/^$/ {
+X	if ( HEADER != "" )
+X		print HEADER >> OUTPUT
+X	HEADER = ""
+X	STATE = 2
+X}
+X{
+X	if ( STATE == 1 ) {
+X		HEADER = HEADER "\n" $0
+X		next
+X	}
+X	if ( STATE == 2 ) {
+X		if ( OUTPUT != "" )
+X			print >> OUTPUT
+X		else
+X			print "### ^Message-Id missing ###"
+X		next
+X	}
+X	print "### Parsing error ###"
+X	print
+X}
+X#
+X# eof
+END-of-split-by-messageid.awk
+echo x - report-missing-messageid.sh
+sed 's/^X//' >report-missing-messageid.sh << 'END-of-report-missing-messageid.sh'
+X#!/bin/sh
+X#
+X#	(c) 1994-2003, Dirk Meyer, Im Grund 4, 34317 Habichtswald
+X#
+X#
+Xls -u test |
+Xwhile read mid
+Xdo
+X	found=$(
+X		(
+X			echo -n "select message_id from commit_log where message_id='"
+X			echo -n "${mid}"
+X			echo "';"
+X		) | psql freshports | grep "^(1"
+X	)
+X	if test ! "${found}" = ""
+X	then
+X		continue
+X	# Mail 
+X	message=$(cat "data/${mid}")
+X	echo "From: <archive-scan@freshports.org>
+XTo: <archive-report@freshports.org>
+XSubject: New message: ${mid}
+XMime-Version: 1.0
+XContent-Type: text/plain; charset=iso-8859-1
+XContent-Disposition: inline
+XContent-Transfer-Encoding: 8bit
+X
+X${messaage}
+X" | /usr/sbin/sendmail -farchive-scan@freshports.org -t
+X	fi
+X	echo "${mid}"
+Xdone
+X#
+X# eof
+END-of-report-missing-messageid.sh
+exit
+
+
