@@ -39,7 +39,7 @@ commit data was migrated and the website goes live. This should be a few
 weeks worth of data.
 </LI>
 
-</OL>
+</UL>
 
 <H2>One click watch list add/remove</H2>
 
