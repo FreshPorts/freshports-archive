@@ -5,28 +5,17 @@ use DBI;
 use element;
 use category;
 use port;
+use database;
+use db_utils;
+
 use File::Basename;
 use Sys::Syslog;
 
 require config;
 
-sub GetDBHandle {
-   my $dbh_pg = DBI->connect('DBI:Pg:dbname=' . $FreshPorts::Config::dbname, $FreshPorts::Config::user, $FreshPorts::Config::password);
-   if ($dbh_pg->{Active}) {
-      $dbh_pg->{AutoCommit} = 0;
-
-      if (!$dbh_pg) {
-         Sys::Syslog::syslog('warning', "could not connect to FreshPorts2");
-         die "could not connect to FreshPorts2\n";
-      }
-   }
-
-   return $dbh_pg;
-}
-
 my ($dbh, $port, $name);
 
-$dbh = GetDBHandle();
+$dbh = FreshPorts::Database::GetDBHandle();
 
 $name = "security/acid";
 
@@ -48,13 +37,16 @@ my $category = FreshPorts::Category->new($dbh);
 $category->{name} = File::Basename::dirname($name);
 my $category_id = $category->FetchByName();
 if (!$category_id) {
-	$category_id->save;
+	$category->{is_primary} = 1;
+	$category_id = $category->save();
 }
 
 
 $port = FreshPorts::Port->new($dbh);
 $port->{element_id}  = $element_id;
 $port->{category_id} = $category_id;
+$port->{category}    = $category->{name};
+$port->{name}        = File::Basename::basename($name);
 
 print "about to save\n";
 
@@ -81,6 +73,23 @@ $port->FetchByID();
 print "id                   = $port->{id}\n";
 print "element_id           = $port->{element_id}\n";
 print "category_id          = $port->{category_id}\n";
+print "needs_refresh        = $port->{needs_refresh}\n";
+print "category             = $port->{category}\n";
+print "name                 = $port->{name}\n";
+
+
+print "\n\n\n\ FETCHING by $name\n";
+
+$port = FreshPorts::Port->new($dbh);
+$port->{partialpathname} = $name;
+$port->FetchByPartialPathName();
+
+print "id                   = $port->{id}\n";
+print "element_id           = $port->{element_id}\n";
+print "category_id          = $port->{category_id}\n";
+print "needs_refresh        = $port->{needs_refresh}\n";
+print "category             = $port->{category}\n";
+print "name                 = $port->{name}\n";
 
 $dbh->commit();
 $dbh->disconnect();

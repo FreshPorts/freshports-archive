@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# $Id: element.pm,v 1.2 2001-11-06 19:21:09 dan Exp $
+# $Id: element.pm,v 1.3 2001-11-09 18:49:38 dan Exp $
 #
 
 package FreshPorts::Element;
@@ -8,8 +8,8 @@ package FreshPorts::Element;
 use strict;
 use File::Basename;
 
-my $Active	= 'A';
-my $Deleted	= 'D';
+$FreshPorts::Element::Active	= 'A';
+$FreshPorts::Element::Deleted	= 'D';
 
 sub new {
 	my $this		= {};
@@ -48,7 +48,7 @@ sub save {
 	}
 
 	if (!$this->{status}) {
-		$this->{status} = $Active;
+		$this->{status} = $FreshPorts::Element::Active;
 	}
 
 	# if we don't have the parent id, derive it from the pathname
@@ -133,8 +133,6 @@ sub FetchByID {
 	$this->{status}				= $row->{status};
 	$this->{pathname}			= $row->{pathname};
 
-	print "found id = $this->{id}\n";
-
 	return $this->{id};
 }
 
@@ -163,8 +161,6 @@ sub FetchByName {
 
 	$sth->finish();
 	$this->{id} = $row[0];
-
-	print "found id = $this->{id}\n";
 
 	# now that we have the ID for this name, let's fetch it...
 	#

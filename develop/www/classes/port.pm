@@ -1,18 +1,44 @@
 #!/usr/bin/perl
 #
-# $Id: port.pm,v 1.1 2001-11-06 19:21:09 dan Exp $
+# $Id: port.pm,v 1.2 2001-11-09 18:49:38 dan Exp $
 #
 
 package FreshPorts::Port;
 require Exporter;
 require	config;
+require	element;
 
+use File::PathConvert;
 use strict;
 use config;
+use constants;
 
 # =================================
 
 sub _initialize {
+	my $this = shift;
+
+	#
+	# a value of -1 means that the refresh requirements have
+	# not yet been established.
+	# essentially, this is a newly added port.  some ports
+	# are slave ports.  querying the Makefile will provide
+	# the locations of the master port files required to
+	# refresh this port.
+	#
+	$this->{needs_refresh} = -1;
+}
+
+sub _GetValuesFromRow {
+	my $this = shift;
+	my $row  = shift;
+
+	$this->{id} 			= $row->{id};
+	$this->{element_id}		= $row->{element_id};
+	$this->{category_id}	= $row->{category_id};
+	$this->{needs_refresh}	= $row->{needs_refresh};
+	$this->{category}		= $row->{category};
+	$this->{name}			= $row->{name};
 }
 
 # =================================
@@ -35,7 +61,7 @@ sub save {
 
 	#
 	# to save, element_id and category_id must be valid
-	# 
+	#
 
 	my $dbh = $this->{dbh}; # just a short cut...
 	my $sth;
@@ -45,33 +71,49 @@ sub save {
 	if ($this->{id}) {
 		# we are updating
 
-# correct this sql
+# correct this sql to update all fields...
+
 		$sql = "update ports  \
 				set \
-				is_primary = " . $dbh->quote($this->{is_primary}) . ", \
-				element_id = $this->{element_id}, \
-				name      = " . $dbh->quote($this->{name}) . ", \
-				description = " . $dbh->quote($this->{description}) . " \
+				is_primary		= " . $dbh->quote($this->{is_primary}) . ", \
+				element_id		= $this->{element_id}, \
+				name			= " . $dbh->quote($this->{name}) . ", \
+				description		= " . $dbh->quote($this->{description}) . " \
+				needs_refresh	= $this->{needs_refresh} \
 				 where id = $this->{id}";
 		$sth = $this->{dbh}->prepare($sql);
 		$sth->execute ||
-			die "Could not execute SQL $sql ... maybe invalid?";
+			die "Could not execute SQL $sql ... maybe invalid? " . $dbh->errstr;
 	} else {
 		# we are inserting
-		$sql = "select CreatePort(" . $dbh->quote($this->{element_id}) . ", \
-				" . $dbh->quote($this->{category_id}) . ")";
+		# do we really need to quote these things?
+
+		if (!$this->{element_id} || !$this->{category_id} || !$this->{category} || !$this->{name}) {
+			Sys::Syslog::syslog('warning', "Cannot create new port.  Insufficient data");
+			die "Cannot create new port.  Insufficient data";
+		}
+
+		
+
+# update this sql to insert all fields?
+
+		$this->{id} = FreshPorts::Database::GetNextValue($FreshPorts::Constants::ports_id_seq, $dbh);
+
+		$this->{needs_refresh} = $this->GetNeedsRefreshForNewPort();
+
+		$sql = "insert into ports (id, element_id, category_id, needs_refresh) values ( \
+				$this->{id}, \
+				$this->{element_id}, \ 
+				$this->{category_id}, \
+				$this->{needs_refresh})";
 
 		print "sql is $sql\n";
 
 		$sth = $this->{dbh}->prepare($sql);
-		$sth->execute ||
-			die "Could not execute SQL $sql ... maybe invalid?";
-
-		@row = $sth->fetchrow_array();
-
-		$sth->finish();
-
-		$this->{id} = $row[0];
+		if (!$sth->execute) {
+			Sys::Syslog::syslog('warning', "Could not execute SQL $sql ... maybe invalid? " . $dbh->errstr);
+			die "Could not execute SQL $sql ... maybe invalid? " . $dbh->errstr;
+		}
 
 	}
 
@@ -89,31 +131,31 @@ sub FetchByID {
 
 	$dbh		= $this->{dbh};
 
-	$sql = "select * from ports where id = $this->{id}";
+	$sql = "select ports.*, categories.name as category, element.name as name \
+              from ports, categories, element \
+             where ports.id          = $this->{id} \
+               and ports.category_id = categories.id \
+               and ports.element_id  = element.id";
 	print "sql = '$sql'\n";
 
 	$sth = $dbh->prepare($sql);
 	if (!$sth->execute) {
 		Sys::Syslog::syslog('warning', "Could not execute SQL $sql");
-		die "Could not execute SQL $sql ... maybe invalid?";
+		die "Could not execute SQL $sql ... maybe invalid? " . $dbh->errstr;
 	}
 
 	$row = $sth->fetchrow_hashref();
 
 	$sth->finish();
 
-	$this->{id} 			= $row->{id};
-	$this->{element_id}		= $row->{element_id};
-	$this->{category_id}	= $row->{category_id};
-
-	print "found id = $this->{id}\n";
+	$this->_GetValuesFromRow($row);
 
 	return $this->{id};
 }
 
-sub FetchByName {
+sub FetchByPartialPathName {
 	# obtain the element based on the pathname supplied
-	my $this	= shift;
+	my $this = shift;
 
 	my $dbh;
 	my $sql;
@@ -121,32 +163,162 @@ sub FetchByName {
 	my $row;
 	my $tmp;
 
-	$dbh		= $this->{dbh};
+	$dbh = $this->{dbh};
 	if (!$dbh) {
 		die " no database handle!";
 	}
 
+ 	my $element;
+
+	$element = FreshPorts::Element->new($dbh);
+	$element->{pathname} = "$FreshPorts::Config::ports_prefix/$this->{partialpathname}";
+	$this->{element_id} = $element->FetchByName();
+
+	if (!$this->{element_id}) {
+		return $this->{element_id};
+	}
+
 	$tmp = $dbh->quote($this->{name});
-	$sql = "select * from ports where name = $tmp";
+	$sql = "select ports.*, categories.name as category, element.name as name \
+              from ports, categories, element \
+             where ports.element_id  = $this->{element_id} \
+               and ports.category_id = categories.id \
+               and ports.element_id  = element.id";
 	print "sql = '$sql'\n";
 
 	$sth = $dbh->prepare($sql);
 	if (!$sth->execute) {
 		Sys::Syslog::syslog('warning', "Could not execute SQL $sql");
-		die "Could not execute SQL $sql ... maybe invalid?";
+		die "Could not execute SQL $sql ... maybe invalid? " . $dbh->errstr;
 	}
 
 	$row = $sth->fetchrow_hashref();
 
 	$sth->finish();
 
-	$this->{id} 			= $row->{id};
-	$this->{element_id}		= $row->{element_id};
-	$this->{category_id}	= $row->{category_id};
-
-	print "found id = $this->{id}\n";
+	$this->_GetValuesFromRow($row);
 
 	return $this->{id};
+}
+
+sub GetNeedsRefreshForNewPort {
+	my $this = shift;
+	#
+	# When a new port is imported, we need to get the
+	# makefile and determine whether or not this port
+	# uses a description or comments file.  If it does,
+	# then we adjust needs_refresh accordingly.
+	# Note that some ports use another ports description
+	# or comments file.  Therefore we may not have
+	# to fetch those files in order to complete
+	# the importing of a new port
+	#
+	# this function tells you what files are needed by first fetching the Makefile
+	# and using that to determine the other information.
+
+
+	my $needs_refresh	= 0;
+	my $category		= $this->{category};
+	my $port			= $this->{name};
+
+#	if (!$port) {
+#		
+#	}
+#
+#	if (!$category) {
+#	}
+
+	print "category = $category\n";
+	print "port     = $port\n";
+
+	#
+	# fetch the makefile for this port
+	#
+	my $DESTDIR	= "$FreshPorts::Config::path_to_ports/$category/$port";
+	my $SRCDIR	= "$FreshPorts::Config::ports_prefix/$category/$port";
+	my $FILE	= $FreshPorts::Constants::FILE_MAKEFILE;
+
+	`sh $FreshPorts::Config::scriptpath/fetch-cvs-file.sh $DESTDIR $SRCDIR $FILE`;
+
+	if (($? >> 8)) {
+		#
+		# This might be a nice place to retry a fetch, or send an email
+		#
+		print "that fetch failed.  What do to?\n";
+
+		# and we're outta here
+	} else {
+		print "now doing a chdir to $DESTDIR\n";
+		chdir "$DESTDIR";
+
+		#
+		# create this directory to catch errors
+		# such as the pre-everything having only one ':'
+		#
+		mkdir "pkg",0;
+
+		my $makecommand = "make -V DESCR -V COMMENT -f $DESTDIR/$FILE";
+
+		# remove previously created directory
+		rmdir "pkg";
+
+		print "makecommand = $makecommand\n";
+		(my $DESCR, my $COMMENT) = split(/\n/s, `$makecommand`);
+
+		#
+		# we need to check this return value.  if it fails, we need to know
+		#
+
+		if ($? == 0) {
+			print "raw       data DESCR   = $DESCR\n";
+			print "raw       data COMMENT = $COMMENT\n";
+
+			#
+			# some ports (e.g. korean/netscape47-communicator) use
+			# ../ in their path names.  We must remove that in order
+			# to find out if have to retrieve a file in our path
+			#
+
+			$DESCR   = File::PathConvert::realpath($DESCR);
+
+			print "converted data DESCR   = $DESCR\n";
+			print "converted data COMMENT = $COMMENT\n";
+
+			my $entry = $FreshPorts::Constants::FILE_DESCRIPTION;
+			if ($DESCR eq "$FreshPorts::Config::path_to_ports/$category/$port/$entry") {
+				print "this port has it's own $entry\n";
+				my $index = $FreshPorts::Constants::FilesWhichPromptRefresh{$entry};
+				if ($index) {
+				print "index = $index\n";
+				$needs_refresh |= $index;
+				}
+			} else {
+				print "this port uses $DESCR\n";
+			}
+
+			$entry = $FreshPorts::Constants::FILE_COMMENT;
+
+			$COMMENT = File::PathConvert::realpath($COMMENT);
+			if ($COMMENT eq "$FreshPorts::Config::path_to_ports/$category/$port/$entry") {
+				print "this port has it's own $entry\n";
+				my $index = $FreshPorts::Constants::FilesWhichPromptRefresh{$entry};
+				if ($index) {
+					print "index = $index\n";
+					$needs_refresh |= $index;
+				}
+			} else {
+				print "this port uses $COMMENT\n";
+			}
+
+			print "after all that, needs_refresh = $needs_refresh\n";
+		} else {
+			print "error executing make command: " . ($? >> 8) . "\n";
+			Sys::Syslog::syslog('warning', "error executing make command: Error Code = " . ($? >> 8));
+			die "error executing make command: Error Code = " . ($? >> 8) . "\n";
+		}
+	}
+
+	return $needs_refresh;
 }
 
 1;
