@@ -5,6 +5,26 @@
 # ports table accordingly.
 #
 
+# =================================    
+sub ExtractCategoryFromDirectory($) {
+
+   my $dir = shift;
+
+print "directory = $dir\n";
+
+   # split the dir into separate elements
+   my @fields = split(/\//, $dir);
+
+   #grab the last one.
+   my $category = @fields[$#fields];
+
+print "category = $category\n";
+
+   # who's your daddy?
+   return $category
+}
+   
+
 # =================================
 sub PackageExists($) {
 
@@ -104,14 +124,15 @@ sub GetPortCategory($;$) {
    return @row[0];
 }
 
-sub PortUpdate($;$;$;$;$;$;$;$;$;$;$;$;$;$;$;$) {
-#PortUpdate ($name, $portname, $descrfile, $categories, $portversion, 
+sub PortUpdate($;$;$;$;$;$;$;$;$;$;$;$;$;$;$;$;$) {
+#PortUpdate ($name, $portname, $category, $descrfile, $categories, $portversion, 
 #          $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
 #    $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
 
    my $name             = shift;
    my $portname         = shift;
-   my $descpath         = shift;
+   my $category         = shift;
+   my $descrfile        = shift;
    my $categories       = shift;
    my $portversion      = shift;
    my $commentfile      = shift;
@@ -131,13 +152,27 @@ if ($name ne $portname) {
    print "*************** port ('$name') differs from portname('$portname')\n";
 }
 
-print "$name, $portname, $descrfile, $categories, $portversion, ",  \
-      "$commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends, ", \
-      "$builddepends, $rundepends\n";
+print " 0 $name\n";
+print " 1 $portname\n";
+print " a $category\n";
+print " 2 $descrfile\n";
+print " 3 $categories\n";
+print " 4 $portversion\n";
+print " 5 $commentfile\n";
+print " 6 $maintainer\n";
+print " 7 $extractsuffix\n";
+print " 8 $mastersites\n";
+print " 9 $builddepends\n";
+print "10 $rundepends\n";
+print "11 $shortdescription\n";
+print "12 $longdescription\n";
+print "13 $homepage\n";
+print "14 $packageexists\n";
 
-$category = GetCategoryFromCategories($categories);
+# this asks for user input
+#<STDIN>;
 
-print "category = $category", "\n";
+#return;
 
    $categoryid = GetPortCategory($category, $dbh);
    if (!$categoryid) {
@@ -173,12 +208,12 @@ print "category = $category", "\n";
       $sql = "insert into ports (name, description, last_update,                           \
               primary_category_id, last_update_description, system, version, date_created, \
               short_description, long_description, maintainer, categories,                 \
-              date_last_refreshed, homepage, master_sites, extract_suffix, package_exists, \
+              date_last_refreshed, needs_refresh, homepage, master_sites, extract_suffix, package_exists, \
               status) values (";
 
       $sql .= "'$name', '$descpath', current_timestamp, $categoryid , '',                 \
               'FreeBSD', '$portversion', current_timestamp, '$shortdescription',          \
-              '$longdescription', '$maintainer', '$categories', current_timestamp,        \
+              '$longdescription', '$maintainer', '$categories', current_timestamp, 'N',    \
               '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
 
       print "$sql\n";
@@ -189,18 +224,13 @@ print "category = $category", "\n";
          die "Could not insert statement ... maybe invalid?";
    } else {
       # update the time on the port
-      $sql = "update ports set description = '$descpath', last_update =       \ 
-              current_timestamp, version = '$portversion', short_description = \
+      $sql = "update ports set description = '$descpath',       \ 
+              version = '$portversion', short_description = \
               '$shortdescription', long_description = '$longdescription', maintainer = \
               '$maintainer', categories = '$categories', date_last_refreshed = \
               current_timestamp, homepage = '$homepage', master_sites = '$mastersites', \
               extract_suffix = '$extractsuffix', package_exists = '$packageexists', status \
-              = 'N') values (";
-
-      $sql .= "'$name', '$descpath', current_timestamp, $categoryid , '', \
-              'FreeBSD', '$portversion', current_timestamp, '$shortdescription', \
-              '$longdescription', '$maintainer', '$categories', current_timestamp, \
-              '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
+              = 'N', needs_refresh = 'N' where id = $row[0]";
 
       print "$sql\n";
 
@@ -215,6 +245,13 @@ use DBI;
 
 $BASEDIR = "/usr/ports";
 
+
+$IGNOREDDIRS = "Attic|distfiles|Mk|Tools|Templates|.|..|pkg|distributed";
+
+$STARTWITHDIR  = "/usr/ports/distfiles";
+
+$dbh = DBI->connect('dbi:mysql:freshports','updater','xyzzy');
+
 $maxlength=0;
 
 #
@@ -224,7 +261,13 @@ opendir PORTSHANDLE,$BASEDIR;
 while(($dirname = readdir(PORTSHANDLE))) {
    print "looking at $BASEDIR/$dirname\n";
       if(-d "$BASEDIR/$dirname" && grep(/^[a-z]/, $dirname)) {
-         push @CATEGORIES, "$BASEDIR/$dirname";
+         print "$BASEDIR/$dirname";
+         if ($dirname !~ /$ignoredirs/) {
+            push @CATEGORIES, "$BASEDIR/$dirname";
+            print "\n";
+         } else {
+            print " <=== ignoring\n";
+         }
       }
 }
 closedir PORTSHANDLE;
@@ -232,12 +275,36 @@ closedir PORTSHANDLE;
 # iterate the list of categories and generate a hash of all the ports
 # we use a hash because ports might exist in multiple places
 
+$FoundStartDir = "N";
+
+CATEGORY:
 foreach $dirname (@CATEGORIES) {
    opendir CATHANDLE, $dirname;
-   print "checking $dirname\n";
+   print "checking $dirname";
+
+   # we are looking for a directory to start with and we haven't found it yet
+   if ($STARTWITHDIR ne "" && $FoundStartDir eq "N") {
+      # is this our starting place?
+      if ($dirname eq $STARTWITHDIR) {
+         # this is where we start
+         $FoundStartDir = "Y";
+         print "\nfound our starting directory, press any key to continue.";
+         print "FoundStartDir = $FoundStartDir\n";
+         <STDIN>;
+         closedir CATHANDLE;
+      } else {
+         print "\n";
+      }
+
+      # in all cases, we skip to the next directory.
+      # we haven't found our start, so let's continue looping
+      next CATEGORY;
+   }
+
    while(($port = readdir(CATHANDLE))) {
-      print "   $dirname/$port\n";
-      if (-d "$dirname/$port" && $port ne "." && $port ne ".." && $port ne "pkg") {
+      print "\n... now checking $dirname/$port .... ";
+      if (-d "$dirname/$port" && $port !~ /$ignoredirs/) {
+
 print "...now looking at $dirname/$port/Makefile\n";
 
 #
@@ -252,13 +319,17 @@ print "...now looking at $dirname/$port/Makefile\n";
                         "-V BUILD_DEPENDS -V RUN_DEPENDS -f $dirname/$port/Makefile";
 
 print "makecommand = $makecommand\n";
-         chdir $dirname;
+         chdir "$dirname/$port";
+
          ($portname, $packagename, $descrpath, $categories, $portversion, $commentfile,
           $maintainer, $extractsuffix, $mastersites, $builddepends,
           $rundepends) = split(/\n/s, `$makecommand`);
 
-print " 0 $dirname\n";
+$category = ExtractCategoryFromDirectory($dirname);
+
+print " 0 $port\n";
 print " 1 $portname\n";
+print " a $category\n";
 print " 2 $packagename\n";
 print " 3 $descrpath\n";
 print " 4 $categories\n";
@@ -276,6 +347,17 @@ $shortdescription = ReadFile($commentfile);
 
 $packageexists = PackageExists($packname . "tgz");
 
+# because we are adding in \ before the quotes,
+# we need to quote the \'s first.
+
+#  these bits might have \'s.   
+$longdescription  =~ s/\\/\\\\/g;
+$shortdescription =~ s/\\/\\\\/g;
+
+#  these bits might have quotes.
+$longdescription  =~ s/\'/\\'/g;
+$shortdescription =~ s/\'/\\'/g;
+
 print "12 $shortdescription\n";
 print "13 $longdescription\n";
 print "14 $homepage\n";
@@ -283,12 +365,12 @@ print "15 $packageexists\n";
 
 print "\n ---------------------------------------- \n";
 
-PortUpdate ($dirname, $portname, $descrpath, $categories, $portversion, 
+PortUpdate ($port, $portname, $category, $descrpath, $categories, $portversion, 
           $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
     $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
 
-exit;
-
+      } else {
+         print "skipping\n";
       }
       
    }
