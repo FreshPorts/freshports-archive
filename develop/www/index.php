@@ -26,7 +26,7 @@
 <A HREF="new.php">Geek stuff</A><BR>
 <A HREF="developers.php">Developers</A><BR>
 <A HREF="/msgs/FreeBSD/">Messages</A><BR>
-<A HREF="processing.php">Message processing</A>
+<A HREF="processing.php">Message processing</A><br>
 <A HREF="about.php">About</A>
 </TD>
 
