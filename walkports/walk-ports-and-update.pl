@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+ 
 #
 # this script should walk the ports tree and update the 
 # ports table accordingly.
@@ -51,6 +51,7 @@ LINE:
 sub ReadFile($) {
 
    my $file = shift;
+   my $content;
 
    open F,$file;
 
@@ -69,6 +70,8 @@ sub ReadFile($) {
 sub GetDescrAndHomePage($) {
 
    my $file = shift;
+   my $url;
+   my $DESCR;
 
    open F,$file;
 
@@ -110,17 +113,17 @@ sub GetPortCategory($;$) {
    my $category = shift;
    my $dbh = shift;
 
-   $sql = "select id from categories where name = '" . $category . "'";
+   my $sql = "select id from categories where name = '" . $category . "'";
 
    print "\n",$sql, "\n";
 
-   $sth = $dbh->prepare($sql);
+   my $sth = $dbh->prepare($sql);
 
    $sth->execute ||
         die "Could not execute SQL statement ... maybe invalid?";
 
 
-   @row=$sth->fetchrow_array;
+   my @row=$sth->fetchrow_array;
 
    print "\nGetPortCategory = $sql which gives ", @row[0], "\n";
 
@@ -177,7 +180,7 @@ print "14 $packageexists\n";
 
 #return;
 
-   $categoryid = GetPortCategory($category, $dbh);
+   my $categoryid = GetPortCategory($category, $dbh);
    if (!$categoryid) {
       print "ERROR *** could not find category for $category\n";
       exit;
@@ -185,14 +188,14 @@ print "14 $packageexists\n";
 
    # update the port, creating it if necessary
 
-   $sql = "select id from ports where name = '$name' and primary_category_id = $categoryid";
+   my $sql = "select id from ports where name = '$name' and primary_category_id = $categoryid";
    print "sql = ", $sql, "\n";
-   $sth = $dbh->prepare($sql);
+   my $sth = $dbh->prepare($sql);
 
    $sth->execute ||
       die "Could not execute SQL statement ... maybe invalid?";
 
-   @row=$sth->fetchrow_array;
+   my @row=$sth->fetchrow_array;
 
    if (@row) {
       print "something found\n";
@@ -206,18 +209,19 @@ print "14 $packageexists\n";
    # get package exists
 
    print "port ID found = ", $row[0], "\n";
-  if (!@row) {
+   if (!@row) {
       # no such port.  create it.
-      $sql = "insert into ports (name, description,                            \
-              primary_category_id, system, version, date_created, \
-              short_description, long_description, maintainer, categories,                 \
+      $sql = "insert into ports (name, description,                                                       \
+              primary_category_id, system, version, date_created,                                         \
+              short_description, long_description, maintainer, categories,                                \
               date_last_refreshed, needs_refresh, homepage, master_sites, extract_suffix, package_exists, \
-              status) values (";
+              status, depends_run, depends_build) values (";
 
-      $sql .= "'$name', '$descpath', $categoryid ,                 \
-              'FreeBSD', '$portversion', current_timestamp, '$shortdescription',          \
-              '$longdescription', '$maintainer', '$categories', current_timestamp, 'N',    \
-              '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
+      $sql .= "'$name', '$descpath', $categoryid ,                                        \
+              'FreeBSD', '$portversion', current_timestamp, '$shortdescription',          \ 
+              '$longdescription', '$maintainer', '$categories', current_timestamp, 'N',   \
+              '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A',       \
+              '$rundepends', '$builddepends')";
 
       print "$sql\n";
 
@@ -233,7 +237,8 @@ print "14 $packageexists\n";
               '$maintainer', categories = '$categories', date_last_refreshed = \
               current_timestamp, homepage = '$homepage', master_sites = '$mastersites', \
               extract_suffix = '$extractsuffix', package_exists = '$packageexists', status \
-              = 'N', needs_refresh = 'N' where id = $row[0]";
+              = 'N', needs_refresh = 'N', depends_run = '$rundepends', depends_build = '$builddepends' \
+              where id = $row[0]";
 
       print "$sql\n";
 
@@ -264,6 +269,8 @@ print "connecting to production... press enter to continue";
 $dbh = DBI->connect('dbi:mysql:freshports','root','xyzzy');
 
 $maxlength=0;
+$maxrundepends=0;
+$maxbuilddepends=0;
 
 #
 # get a list of categories
@@ -335,6 +342,18 @@ print "...now looking at $dirname/$port/Makefile\n";
 print "makecommand = $makecommand\n";
          chdir "$dirname/$port";
 
+#undef($portname);
+#undef($packagename);
+#undef($descrpath);
+#undef($categories);
+#undef($portversion);
+#undef($commentfile);
+#undef($maintainer);
+#undef($extractsuffix);
+#undef($mastersites);
+#undef($builddepends);
+#undef($rundepends);
+
          ($portname, $packagename, $descrpath, $categories, $portversion, $commentfile,
           $maintainer, $extractsuffix, $mastersites, $builddepends,
           $rundepends) = split(/\n/s, `$makecommand`);
@@ -354,6 +373,26 @@ print " 8 $extractsuffix\n";
 print " 9 $mastersites\n";
 print "10 $builddepends\n";
 print "11 $rundepends\n";
+
+print "length(builddepends) = " . length($builddepends) . "\n";
+print "length(rundepends)   = " . length($rundepends). "\n";
+
+if (length($builddepends) > $maxbuilddepends) {
+   $maxbuilddepends = length($builddepends);
+}
+   
+if (length($rundepends) > $maxrundepends) {
+   $maxrundepends = length($rundepends);
+}
+
+print "maxbuilddepends = $maxbuilddepends\n";
+print "maxrundepends   = $maxrundepends\n";
+
+# It appears that if no homepage is found, the homepage does not get over 
+# written (i.e. cleared).  Therefore I will do it manually.
+#
+#undef($homepage);
+#undef($longdescription);
 
 ($longdescription, $homepage) = GetDescrAndHomePage($descrpath);
 
@@ -380,14 +419,23 @@ print "15 $packageexists\n";
 print "\n ---------------------------------------- \n";
 
 PortUpdate ($port, $portname, $category, $descrpath, $categories, $portversion, 
-          $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
-    $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
+            $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
+            $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
+
+print "maxbuilddepends = $maxbuilddepends\n";
+print "maxrundepends   = $maxrundepends\n";
+
+#if ($maxrundepends * $maxbuilddepends > 0 ) {
+#   exit;
+#}
+
+#print "presss enter to continue";
+#<STDIN>;
 
       } else {
          print "skipping\n";
       }
    } # else yes, the Makefile does exist.
-      
    }
    closedir CATHANDLE;
 
@@ -395,4 +443,5 @@ PortUpdate ($port, $portname, $category, $descrpath, $categories, $portversion,
 
 #print "maximum length: $maxlength in $maxport\n";
 
-
+print "maxbuilddepends = $maxbuilddepends\n";
+print "maxrundepends   = $maxrundepends\n";
