@@ -143,7 +143,7 @@ $HTML = "";
 #					if ($myrow["broken"]) {
 #						$HTML .= '<img src="images/broken.gif" alt="Broken" width="17" height="16" hspace="2">';
 #					}
-					$HTML .= htmlspecialchars($myrow["commit_description"]) . "</td>\n";
+					$HTML .= '<PRE>' . htmlspecialchars($myrow["commit_description"]) . "</PRE></td>\n";
 
 					$HTML .= "</tr>\n";
 				}
