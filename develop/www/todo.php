@@ -49,7 +49,7 @@ as a starting point.
 be completed until the perl scripts are finished.
 Part of the conversion process from mySQL to PostgreSQL involves
 the conversion of the webpages and the scripts.  Right now we need
-the following added to Manits.  If you want do add these, contact
+the following added to Mantis.  If you want do add these, contact
 dan @ freshports.org and I will add you to the list of Mantis users.
 
 <UL>
