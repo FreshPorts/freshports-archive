@@ -29,33 +29,10 @@ to duplicate that list here.  We have more immediate needs at present
 before we can even consider those items.
 </P>
 
-<H2>perl classes</H2>
-
-<P>This is our most urgent requirement.  We need <A HREF="/classes">perl classes</A> for the following:
-
-<UL>
-<LI>commit_log</LI>
-<LI>commit_log_element</LI>
-<LI>element_revision</LI>
-</UL>
-
-These should be fairly easy to create, using <A HREF="/classes/element.pm">FreshPorts::Element</A>
-as a starting point.
-</P>
-
-<H2>Webpages/scripts</H2>
-
-<P>The conversion process is probably the biggest step but can not
-be completed until the perl scripts are finished.
-Part of the conversion process from mySQL to PostgreSQL involves
-the conversion of the webpages and the scripts.  Right now we need
-the following added to Mantis.  If you want do add these, contact
-dan @ freshports.org and I will add you to the list of Mantis users.
-
-<UL>
-<LI>list of webpages needing conversion</LI>
-<LI>list of scripts needing conversion</LI>
-</UL>
+<P>
+Until we track that file down, please refer to <A HREF="/mantis/">Mantis</A>
+for a list of the things we have to do.
+<P>
 
 <H2>Other random ideas:</H2>
 
