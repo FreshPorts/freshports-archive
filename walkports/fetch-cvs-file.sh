@@ -26,20 +26,9 @@ else
 
  FETCHFILE=/usr/ports/$CATEG/$PORT/$FILE
 
- fetch -b -o $FETCHFILE.1 http://www.freebsd.org/cgi/cvsweb.cgi/ports/$CATEG/$PORT/$FILE
->/dev/null 2>&1
- if [ $? -ne 0 -o ! -f $FETCHFILE.1 ];
-  then 
-     echo $0 : Download failure 1>&2
-     exit 4
-  else
-  REV=`awk -Frev '/<a NAME="/ { gsub("\".*$","",$2);print $2;exit}' $FETCHFILE.1`
-  echo latest ver is $REV
+ echo about to fetch http://www.freebsd.org/cgi/cvsweb.cgi/ports/$CATEG/$PORT/$FILE
 
-  rm $FETCHFILE.1 2>/dev/null
-  
-  fetch -b -o $FETCHFILE http://www.freebsd.org/cgi/cvsweb.cgi/ports/$CATEG/$PORT/$FILE?rev=$REV
-  exit $?
- fi
+ fetch -b -o $FETCHFILE http://www.freebsd.org/cgi/cvsweb.cgi/ports/$CATEG/$PORT/$FILE?rev=HEAD
+ exit $?
 fi
 
