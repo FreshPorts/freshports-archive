@@ -32,7 +32,7 @@ which contains the cvs logs.  If you're working on the project, you may wish to 
 
 <P>
 You also need to send your 
-public key[s] (found in ~/.ssh/) to <A HREF="mailto:hostmaster@freshports.org">hostmaster@freshports.org</A> who
+public key[s] (found in ~/.ssh/) to <A HREF="&#109;&#97;&#105;&#108;&#116;&#111;:hostmaster&#64;freshports.org">hostmaster&#64;freshports.org</A> who
 will arrange your login. We prefer SSH2 keys.  For details on how to create them, see 
 <A HREF="http://www.freebsddiary.org/ssh-exploit.php">http://www.freebsddiary.org/ssh-exploit.php</A>.
 
@@ -67,7 +67,7 @@ to <CODE>vhosts.conf</CODE>.  Subsitute your own user name for <B>user</B>.
 
 <BLOCKQUOTE><PRE>
 &lt;VirtualHost 192.168.0.16&gt;
-        ServerAdmin     dan@langille.org
+        ServerAdmin     dan&#64;langille.org
         DocumentRoot    /home/<B>user</B>/code/www
         ServerName      <B>user</B>.freshports.org
         ErrorLog        /usr/websites/logs/<B>user</B>.freshports.org-error.log
