@@ -1,12 +1,23 @@
 <head>
-      <title>ports  - PostgreSQL test - last 100 commits</title>
-      <body>
+	<title>ports  - PostgreSQL test - last 100 commits</title>
+<body>
 <p>This window contains the last 100 commits.  Those rows containing N/A in subject have been imported from FreshPorts1.
 </p>
 <P><B>NOTE:</B> this log is missing entries between June 18 and July 29 2001.  The database server was down.
 The messages are in the mail archives.  We just have to process them.</P>
 
       <?php
+
+function StripQuotes($string) {
+	$string = str_replace('"', '', $string);
+
+	return $string;
+}
+
+function FormatTime($Time, $Adjustment, $Format) {
+	return date($Format, strtotime($Time) + $Adjustment);
+}
+
 
 function GetPortNameFromFileName($file_name) {
 
@@ -17,7 +28,7 @@ function GetPortNameFromFileName($file_name) {
 
 }
 
-      $numrows = 100;
+      $numrows = 500;
       $database=pg_connect("dbname=FreshPorts2Test user=dan");
       if ($database) {
 
@@ -29,8 +40,8 @@ $sql = "
 select DISTINCT commit_log.commit_date as commit_date_raw,
        commit_log.id as commit_log_id,
        commit_log.description as commit_description,
-       to_char(commit_log.commit_date, 'YYYY-Mon-DD') as commit_date,
-       to_char(commit_log.commit_date, 'HH24:MI') as commit_time,
+       to_char(commit_log.commit_date - INTERVAL '10800 seconds', 'YYYY-Mon-DD') as commit_date,
+       to_char(commit_log.commit_date - INTERVAL '10800 seconds', 'HH24:MI') as commit_time,
 	   commit_log_port.port_id as port_id,
 	   categories.name as category,
 	   categories.id   as category_id,
@@ -38,17 +49,18 @@ select DISTINCT commit_log.commit_date as commit_date_raw,
 	   ports.version   as version,
 	   element.status    as status,
 	   ports.needs_refresh  as needs_refresh,
-	   ports.broken         as broken,
 	   ports.forbidden      as forbidden,
 	   ports.broken         as broken
   from commit_log_port, commit_log, ports, element, categories
- where commit_log.commit_date        > '2001-09-29'
+ where commit_log.commit_date        > '2001-09-01'
    and commit_log_port.commit_log_id = commit_log.id
    and commit_log_port.port_id       = ports.id
    and categories.id                 = ports.category_id
    and element.id                    = ports.element_id
 order by commit_log.commit_date desc,
-         commit_log_id
+         commit_log_id,
+         category, 
+         port
          limit $numrows";
 
 #echo "\n<pre>sql=$sql</pre>\n";
@@ -61,10 +73,20 @@ order by commit_log.commit_date desc,
 
 				$i=0;
 				$GlobalHideLastChange = "N";
+#				unset($ThisChangeLogID);
 				while ($myrow = pg_fetch_array ($result, $i)) {
 					$rows[$i] = $myrow;
+
+					#
+					# if we do a limit, it applies to the big result set
+					# not the resulting set if we also do a DISTINCT
+					# thus, count the commit id's ourselves.
+					#
+#					if ($ThisChangeLogID <> $myrow["commit_log_id"]) {
+#						$ThisChangeLogID = $myrow["commit_log_id"];
+						$i++;
+#					}
 #					echo "$i, ";
-					$i++;
 					if ($i >= $numrows) break;
 				}
 
@@ -87,12 +109,13 @@ order by commit_log.commit_date desc,
 </tr>
 
 <?
-print "NumRows = $NumRows\n<BR>";
-$HTML = "";
+				print "NumRows = $NumRows\n<BR>";
+				$HTML = "";
+				unset($ThisChangeLogID);
 				for ($i = 0; $i < $NumRows; $i++) {
 					$myrow = $rows[$i];
-
 					$ThisChangeLogID = $myrow["commit_log_id"];
+
 
 					if ($LastDate <> $myrow["commit_date"]) {
 						$LastDate = $myrow["commit_date"];
@@ -125,19 +148,25 @@ $HTML = "";
 						$URL_Category = "category.php3?category=" . $myrow["category_id"];
 						$HTML .= ' <font size="-1"><a href="' . $URL_Category . '">' . $myrow["category"] . '</a></font>';
 
-#						// indicate if this port needs refreshing from CVS
-#						if ($myrow["status"] == "D") {
-#							$HTML .= '<br><font size="-1">[deleted]</font>';
-#						}
-#						if ($myrow["needs_refresh"]) {
-#							$HTML .= ' <font size="-1">[refresh]</font>';
-#						}
-#
+						// indicate if this port needs refreshing from CVS
+						if ($myrow["status"] == "D") {
+							$HTML .= '<br><font size="-1">[deleted]</font>';
+						}
+						if ($myrow["needs_refresh"]) {
+							$HTML .= ' <font size="-1">[refresh]</font>';
+						}
+
 						if ($myrow["date_created"] > Time() - 3600 * 24 * $DaysMarkedAsNew) {
 							$MarkedAsNew = "Y";
 							$HTML .= "<img src=\"/images/new.gif\" width=28 height=11 alt=\"new!\" hspace=2 > ";
 						}
 
+						if ($myrow["forbidden"]) {
+							$HTML .= '<img src="images/forbidden.gif" alt="' . StripQuotes($myrow["forbidden"]) . '" width="20" height="20" hspace="2">';
+						}
+						if ($myrow["broken"]) {
+							$HTML .= '<img src="images/broken.gif" alt="' . StripQuotes($myrow["broken"]) . '" width="17" height="16" hspace="2">';
+						}
 
 						$j++;
 						$MultiplePortsThisCommit = 1;
@@ -147,15 +176,11 @@ $HTML = "";
 
 					$HTML .= "</td><td valign='top'>";
 					$HTML .= '<font size="-1">' . $myrow["commit_time"] . '</font>';
+#					$HTML .= '<BR><font size="-1">' . FormatTime($myrow["commit_time"], 0, "H:i") . '</font>';
+#					$HTML .= '<BR><font size="-1">' . $myrow["commit_date_raw"] . '</font>';
 
 					$HTML .= "</td><td valign='top'>";
-					if ($myrow["forbidden"]) {
-						$HTML .= '<img src="images/forbidden.gif" alt="Forbidden" width="20" height="20" hspace="2">';
-					}
-					if ($myrow["broken"]) {
-						$HTML .= '<img src="images/broken.gif" alt="Broken" width="17" height="16" hspace="2">';
-					}
-					$HTML .= '<PRE>' . htmlspecialchars($myrow["commit_description"]) . "</PRE></td>\n";
+					$HTML .= '<PRE VARIABLE WRAP>' . htmlspecialchars($myrow["commit_description"]) . "</PRE></td>\n";
 
 					$HTML .= "</tr>\n";
 				}
@@ -164,20 +189,6 @@ $HTML = "";
 
 				echo $HTML;
 
-
-#	            echo "<table width='*' border='1'>\n";
-#    	        echo "<tr><td>id</TD><td>Commit message</td><TD>port name</TD><TD>file name</TD></tr>";
-#        	    $i = 0;
-#            	while ($myrow = pg_fetch_array ($result, $i)) {
-#					$i++;
-#					echo "   <tr><td valign='top'>" .
-#					$myrow["commit_log_id"]										. "</td><td valign='top'>".
-#					"<pre><small>" . htmlspecialchars($myrow["commit_description"])	. "</small></pre></td><td valign='top'>".
-#					GetPortNameFromFileName($myrow["full_file_name"])										. "</td><td valign='top'>".
-#					$myrow["full_file_name"]     											. "</td>" . 
-#					"</TR>\n";
-#    	 			if ($i >= $numrows) break;
-#	            }
 	            echo "</table>\n";
 			} else {
 				echo "<P>Sorry, nothing found in the database....</P>\n";
