@@ -13,12 +13,11 @@ my $IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\
 #my $STARTWITHDIR  = "/usr/ports/x11-fonts";
 my $STARTWITHDIR = "";
 
-print "connecting to production... press enter to continue";
-
-<STDIN>;
+#print "connecting to production... press enter to continue";<STDIN>;
 
 #my $dbh = DBI->connect('dbi:mysql:freshportstest','root','xyzzy');
-my $dbh = DBI->connect('dbi:mysql:freshports','root','xyzzy');
+#my $dbh = DBI->connect('dbi:mysql:freshports','root','xyzzy');
+my $dbh = DBI->connect('dbi:mysql:freshportschange','root','xyzzy');
 
 my $maxlength=0;
 my $dirname='';
@@ -62,7 +61,7 @@ foreach $dirname (@CATEGORIES) {
          $FoundStartDir = "Y";
          print "\nfound our starting directory, press any key to continue.";
          print "FoundStartDir = $FoundStartDir\n";
-         <STDIN>;
+#<STDIN>;
          closedir CATHANDLE;
       } else {
          print "\n";
@@ -74,13 +73,14 @@ foreach $dirname (@CATEGORIES) {
    while((my $port = readdir(CATHANDLE))) {
       RefreshPort($dirname, $port, $dbh);
 
-      print "presss enter to continue";
-      <STDIN>;
+#      print "presss enter to continue";<STDIN>;
 
    }
    closedir CATHANDLE;
 
 }
+
+$dbh->disconnect();
 
 #print "maximum length: $maxlength in $maxport\n";
 
