@@ -79,6 +79,36 @@ if $port{watch-list} = 1 {
 When displaying details for the port, you could just echo $watches{$port{id}}.
 </P>
 
+<P>
+I did a simple test case:
+</P>
+<PRE>
+select ports.id, 
+       ports.element_id, 
+       watch_list_element.element_id, 
+       CASE when watch_list_element.element_id is null 
+          then 'not watched' 
+          else 'watched' 
+       END as watch 
+  from ports left outer join watch_list_element 
+       on ports.element_id = watch_list_element.element_id
+ where id = 829;
+
+ id  | element_id | element_id |    watch
+-----+------------+------------+-------------
+ 829 |      10314 |            | not watched
+</PRE>
+
+<P>
+You could easily change the 'not watched' and 'watched' to the PHP or HTML code of your choice!
+</P>
+
+<P>
+<B>12 February 2002</B>: one-click port maintenance is now a reality.
+When the graphics arrive, they will need to be incorporated into the 
+site.
+</P>
+
 <H2>Watch list upload</H2>
 
 ports not found in INDEX; links to website; keep INDEX up to date; what 
