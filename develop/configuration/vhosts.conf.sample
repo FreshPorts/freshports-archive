@@ -11,12 +11,25 @@
 	<Location /classes>
 		IndexOptions    FancyIndexing NameWidth=* DescriptionWidth=*
 		Options         Indexes FollowSymLinks
-		AddDescription	"class for FP2 building block: the element"		element.pm
-		AddDescription	"simple test script for File::Basename module" 		test_FileBasename.pl
-		AddDescription	"creation of a new element"				test_element_create.pl
-		AddDescription	"fetching an element"					test_element_fetch.pl
-		AddDescription	"test the saving/creation of an element"		test_element_save.pl
-		AddDescription	"basic configuration information needed for perl"	config.pm
+		AddDescription	"FreshPorts::Element - basic FP2 building block"				element.pm
+		AddDescription	"simple test script for File::Basename module"			 		test_FileBasename.pl
+		AddDescription	"creation of a new element"										test_element_create.pl
+		AddDescription	"fetching an element"											test_element_fetch.pl
+		AddDescription	"test the saving/creation of an element"						test_element_save.pl
+		AddDescription	"basic configuration information needed for perl"				config.pm
+		AddDescription	"test the creation and reading of a category"					test_category_save.pl
+		AddDescription	"FreshPorts::Category"											category.pm
+		AddDescription  "FreshPorts::Constants"											constants.pm
+		AddDescription	"FreshPorts::Database"											database.pm
+		AddDescription	"FreshPorts::Database (merge with database.pm?)"				db_utils.pm
+		AddDescription	"FreshPorts::Port"												port.pm
+		AddDescription	"test of arrays"												test_file_array.pl
+		AddDescription	"test hash creation"											test_hash.pl
+		AddDescription	"test putting elements into a hash"								test_hash_element.pl
+		AddDescription	"test putting hashes into a hash"								test_hash_hash.pl
+		AddDescription	"test creation and saving of a port"							test_port_save.pl
+		AddDescription	"test the split function"										test_split.pl
+		AddDescription	"FreshPorts::VerifyPort - ensure a given port/category exists"	verifyport.pm
 	</Location>
 
 </VirtualHost>
