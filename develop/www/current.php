@@ -109,9 +109,46 @@ When the graphics arrive, they will need to be incorporated into the
 site.
 </P>
 
+<H2>Caching</H2>
+
+I've been able to writing a simple caching system for the home page.  It is 
+refreshed from the database every minute, if a port commit has taken place.
+It will need some refinement to take into consideraton port refreshes which
+have occurred.
+
+<H2>User Manual</H2>
+
+<P>
+We need to write a user manual.  The system is getting rather complex and
+it would be good to provide a simple set of instructions for those coming
+to the website and logging in for the first time.
+</P>
+
+Things to cover:
+
+<OL>
+<LI>What is this website about?</LI>
+<LI>What is a port</LI>
+<LI>Where do ports come from?</LI>
+<LI>Who do I talk to about a port?</LI>
+<LI>How do I get these ports?</LI>
+<LI>How is the website updated?</LI>
+<LI>What does unknown mean for a committers name?</LI>
+<LI>What does unknown mean for a revsion number?</LI>
+<LI>How can I link to your site?</LI>
+
+</OL>
+
+<H2>Features to add</H2>
+
+<OL>
+<LI>Viewing all the commits for a given day</LI>
+<LI>set robots.txt up....</LI>
+</OL>
+
 <H2>Watch list upload</H2>
 
-ports not found in INDEX; links to website; keep INDEX up to date; what 
+ports not found in INDEX; keep INDEX up to date; what 
 about just searching the db instead of INDEX?
 
 </BODY>
