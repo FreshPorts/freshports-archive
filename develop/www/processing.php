@@ -28,9 +28,9 @@ It is completely automated, requiring no manual steps. There are four logical
 steps to processing a mail message:
 
 <OL>
-<LI>capture the raw email to <A HREF="/msgs/FreeBSD/raw/">disk</A> (procmail script)</LI>
-<LI>convert the email to <A HREF="/msgs/FreeBSD/xml/">XML</A> (process_cvs_mail.pl)</LI>
-<LI><A HREF="/msgs/FreeBSD/xml-output/">load the XML</A> into the database (<A HREF="/classes/">load_xml_into_db.pl</A>)</LI>
+<LI>capture the raw email to <A HREF="/recent/">disk</A> (procmail script)</LI>
+<LI>convert the email to <A HREF="/recent/">XML</A> (process_cvs_mail.pl)</LI>
+<LI><A HREF="/recent/">load the XML</A> into the database (<A HREF="/classes/">load_xml_into_db.pl</A>)</LI>
 <LI>if part of the ports tree, update the ports/categories table accordingly</LI>
 </OL>
 </P>
