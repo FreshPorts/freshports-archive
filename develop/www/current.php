@@ -228,6 +228,8 @@ Things to cover:
 		on your system.  Now you can use <A HREF="/pkg_upload.php">our scripts</A>
 		to use this data to upgrade your watch list!
 	</DD>
+<DT>Search</DT>
+	<DD>There is now a search on the front page</DD>
 </DL>
 
 <H2>Watch list upload</H2>
