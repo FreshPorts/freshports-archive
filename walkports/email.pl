@@ -28,16 +28,16 @@ sub CompileWatchNotifyList($;$) {
    #               and users.id                      = 2
 
    $sql = "select distinct(users.id), users.email \
-             from ports, watch_port, watch, users, watch_notice \
-            where ports.id                      = watch_port.port_id \
+             from change_log, change_log_port, watch_notice, watch_port, watch, users \
+            where change_log.date_added         >= watch_notice.last_sent \
+              and change_log.id                 = change_log_port.change_log_id \
+              and watch_notice.frequency        = '$Frequency' \
+              and watch_port.port_id            = change_log_port.port_id \
               and watch_port.watch_id           = watch.id \
-              and watch.owner_user_id           = users.id \
+              and users.id                      = watch.owner_user_id \
               and length(users.email)           > 0 \
-              and users.watchnotifyfrequency    = '$Frequency' \
-              and users.watchnotifyfrequency    = watch_notice.frequency \
-              and ports.last_update            >= watch_notice.last_sent \
               and users.emailbouncecount        = 0 \
-            group by users.id";
+            order by users.email";
 
    print "sql is $sql\n";
 
@@ -94,7 +94,7 @@ if (($#ARGV+1) == 1) {
 
       $dbh->disconnect();
 
-      SendWatchNotice($Bcc);
+#      SendWatchNotice($Bcc);
 
       print "message sent to users\n";
    } else {
