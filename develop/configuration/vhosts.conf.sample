@@ -1,5 +1,5 @@
 #
-# $Id: vhosts.conf.sample,v 1.7 2002-09-10 12:47:34 dan Exp $
+# $Id: vhosts.conf.sample,v 1.8 2004-01-25 15:42:06 dan Exp $
 #
 # Copyright (c) 1998-2002 DVL Software Limited
 #
@@ -13,6 +13,27 @@
 
 	CustomLog       /usr/websites/logs/develop.freshports.org-access.log common
 	ErrorLog        /usr/websites/logs/develop.freshports.org-error.log
+
+	ScriptAlias /twiki/bin/ "/usr/local/www/twiki/bin/"
+	Alias /twiki/ "/usr/local/www/twiki/"
+
+#	Redirect 			/twiki/index.html http://develop.freshports.org/twiki/bin/view 
+#	AuthUserFile		/usr/local/www/twiki/data/.htpasswd 
+#	ErrorDocument 401	/twiki/bin/oops/TWiki/TWikiRegistration?template=oopsauth
+
+	<Directory "/usr/local/www/twiki/bin">
+		Options +ExecCGI
+		SetHandler cgi-script
+		Allow from all
+		SetEnv USER "www"
+		AllowOverride All
+	</Directory>
+
+	<Directory "/usr/local/www/twiki/pub">
+		Options FollowSymLinks +Includes
+		AllowOverride None
+		Allow from all
+	</Directory>
 
 	<Location /msgs>
 		IndexOptions	FancyIndexing NameWidth=* DescriptionWidth=*
@@ -43,4 +64,8 @@
 		AddDescription	"FreshPorts::VerifyPort - ensure a given port/category exists"	verifyport.pm
 	</Location>
 
+	<Location /recent>
+		IndexOptions    FancyIndexing NameWidth=* DescriptionWidth=*
+		Options         Indexes FollowSymLinks
+	</Location>
 </VirtualHost>
