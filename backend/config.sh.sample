@@ -1,0 +1,11 @@
+#!/bin/sh
+# 
+# $Id: config.sh.sample,v 1.1 2003-04-23 15:18:33 dan Exp $
+#
+# set the sources you wish compare
+#
+
+SOURCE1="http://beta.freshports.org/backend/commits.php"
+SOURCE2="http://migration.freshports.org/backend/commits.php"
+
+SUBJECT="FreshPorts diffs - beta versus migration"
