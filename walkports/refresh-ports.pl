@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+use lib '/usr/local/etc/freshports/updates';
+
 use strict;
 use ports;
  
