@@ -36,7 +36,7 @@ else
   REV=`awk -Frev '/<a NAME="/ { gsub("\".*$","",$2);print $2;exit}' $FETCHFILE.1`
   echo latest ver is $REV
 
-#  rm $FETCHFILE.1 2>/dev/null
+  rm $FETCHFILE.1 2>/dev/null
   
   fetch -b -o $FETCHFILE http://www.freebsd.org/cgi/cvsweb.cgi/ports/$CATEG/$PORT/$FILE?rev=$REV
   exit $?
