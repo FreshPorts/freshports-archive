@@ -205,13 +205,13 @@ print "14 $packageexists\n";
    print "port ID found = ", $row[0], "\n";
   if (!@row) {
       # no such port.  create it.
-      $sql = "insert into ports (name, description, last_update,                           \
-              primary_category_id, last_update_description, system, version, date_created, \
+      $sql = "insert into ports (name, description,                            \
+              primary_category_id, system, version, date_created, \
               short_description, long_description, maintainer, categories,                 \
               date_last_refreshed, needs_refresh, homepage, master_sites, extract_suffix, package_exists, \
               status) values (";
 
-      $sql .= "'$name', '$descpath', current_timestamp, $categoryid , '',                 \
+      $sql .= "'$name', '$descpath', $categoryid ,                 \
               'FreeBSD', '$portversion', current_timestamp, '$shortdescription',          \
               '$longdescription', '$maintainer', '$categories', current_timestamp, 'N',    \
               '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
@@ -246,9 +246,12 @@ use DBI;
 $BASEDIR = "/usr/ports";
 
 
-$IGNOREDDIRS = "Attic|distfiles|Mk|Tools|Templates|.|..|pkg|distributed";
+$IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|.|..|pkg|distributed|CVS";
+$IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\.|\\.";
 
-$STARTWITHDIR  = "/usr/ports/distfiles";
+$IGNOREDPORTS = "\\.\\.|\\.|pkg";
+
+$STARTWITHDIR  = "/usr/ports/x11-fonts";
 
 $dbh = DBI->connect('dbi:mysql:freshports','updater','xyzzy');
 
@@ -259,16 +262,18 @@ $maxlength=0;
 #
 opendir PORTSHANDLE,$BASEDIR;
 while(($dirname = readdir(PORTSHANDLE))) {
-   print "looking at $BASEDIR/$dirname\n";
-      if(-d "$BASEDIR/$dirname" && grep(/^[a-z]/, $dirname)) {
-         print "$BASEDIR/$dirname";
-         if ($dirname !~ /$ignoredirs/) {
-            push @CATEGORIES, "$BASEDIR/$dirname";
-            print "\n";
-         } else {
-            print " <=== ignoring\n";
-         }
+   print "looking at $BASEDIR/$dirname";
+   if(-d "$BASEDIR/$dirname" && grep(/^[a-z]/, $dirname)) {
+      print " considering  $dirname";
+      if ($dirname !~ /$IGNOREDCATS/) {
+         push @CATEGORIES, "$BASEDIR/$dirname";
+         print " accepted\n";
+      } else {
+         print " <=== ******** ignoring\n";
       }
+   } else {
+      print " rejected\n";
+   }
 }
 closedir PORTSHANDLE;
 
@@ -294,16 +299,14 @@ foreach $dirname (@CATEGORIES) {
          closedir CATHANDLE;
       } else {
          print "\n";
+         # we haven't found our start, so let's continue looping
+         next CATEGORY;
       }
-
-      # in all cases, we skip to the next directory.
-      # we haven't found our start, so let's continue looping
-      next CATEGORY;
    }
 
    while(($port = readdir(CATHANDLE))) {
       print "\n... now checking $dirname/$port .... ";
-      if (-d "$dirname/$port" && $port !~ /$ignoredirs/) {
+      if (-d "$dirname/$port" && $port !~ /$IGNOREDPORTS/) {
 
 print "...now looking at $dirname/$port/Makefile\n";
 
