@@ -19,11 +19,12 @@
 <TR>
 <TD VALIGN="top" WIDTH="150">
 <A HREF="mailinglists.html">Mailing lists</A><BR>
-Messages<BR>
 <A HREF="/cgi-bin/cvsweb.cgi">CVS Repository</A><BR>
 <A HREF="/mantis/">Bugs</A><BR>
 <A HREF="todo.php">Things to do</A><BR>
 <A HREF="new.php">Geek stuff</A><BR>
+<A HREF="/msgs/FreeBSD/">Messages</A><BR>
+<A HREF="processing.php">Message processing</A>
 <A HREF="about.php">About</A>
 </TD>
 
