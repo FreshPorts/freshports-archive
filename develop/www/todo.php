@@ -19,27 +19,21 @@
 <H1>FreshPorts Development Site - things to do</H1>
 
 
-<P>Well, we have some work to do...</P>
-
 <P>
-I remember a rather large list of things to do which Harold wrote up some
-time ago.  That is probably in a cvs repo somewhere on the XEON.  Most of
-that, IIRC, was related to FreshPorts2 website design.  I don't intend
-to duplicate that list here.  We have more immediate needs at present
-before we can even consider those items.
-</P>
-
-<P>
-Until we track that file down, please refer to <A HREF="http://mantis.unixthome.org/">Mantis</A>
+Please refer to <A HREF="http://mantis.unixthome.org/">Mantis</A>
 for a list of the things we have to do.
 <P>
+
+<h2>Root directory</h2>
+
+<p>
+I wrote about a <a href="/root-directory.html">root directory idea</a>
+but haven't done much else.
 
 <H2>Other random ideas:</H2>
 
 <P>Each of these are completely stand-alone.  Go for it!</P>
 <UL>
-<LI>get the utility working and deployed which takes your pkg_info output and
-    loads up your watch list</LI>
 <LI>send reminder notices out to people who have had bounced emails, letting
    them know</LI>
 <LI>at present, there is a system wide "date last notices were sent out".
