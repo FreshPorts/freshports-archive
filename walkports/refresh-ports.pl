@@ -16,7 +16,7 @@ my $STARTWITHDIR = "";
 
 print "connecting to production... press enter to continue";
 
-<STDIN>;
+#<STDIN>;
 
 #my $dbh = DBI->connect('dbi:mysql:freshportstest','root','xyzzy');
 my $dbh = DBI->connect('dbi:mysql:freshports','root','xyzzy');
@@ -47,7 +47,7 @@ while (@row=$sth->fetchrow_array) {
 }
 
   print "press enter to continue ";
-  <STDIN>;
+#  <STDIN>;
 
 my $port;
 
@@ -58,10 +58,10 @@ foreach $dirname (@PORTS) {
 
   print " which becomes $dirname : $port\n";
   print "press enter to continue ";
-  <STDIN>;
+#  <STDIN>;
   RefreshPort($dirname, $port, $dbh);
   print "press enter to continue ";
-  <STDIN>;
+#  <STDIN>;
 }
 
 $dbh->disconnect();
