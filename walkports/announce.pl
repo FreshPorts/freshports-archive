@@ -26,37 +26,20 @@ To: freshports-watch\@freshports.org
 Bcc: $Bcc
 Subject: FreshPorts announcement
 
-Hi folks.
+Hi folks,
 
-Many things have changed since FreshPorts was launched.  And
-I'm about to launch FreshPorts 2.  You can preview these
-changes at:
+FreshPorts will be offline for about 6-8 hours.  The outage
+will occur on Monday 4 December 00:00 GMT and will resume at about
+08:00 GMT.  Service may resume earlier.
 
-   http://public.freshports.org/
-
-Please compare the main page above with this alternative:
-
-   http://public.freshports.org/index2.php3
-
-And this third choice which is only slightly different
-from the above:
-
-   http://public.freshports.org/index3.php3
-
-If you have any suggestions or comments, please feel
-free to respond to this email (which will go directly to me)
-or use the Phorum at
-
-   http://freshports.org/phorum/list.php?f=3
-
-Cheers and thanks for your support.
+cheers
 
 --
 
 You are receiving this message as part of the service
 you joined at http://freshports.org/ but if you no longer
 wish to recieve such messages, please go to
-http://freshports.org/customize.php3 and disable annoucements.
+http://freshports.org/customize.php3 and disable announcements.
 
 If a problem occurs, please send details, including the email
 address in question, to postmaster\@freshports.org
