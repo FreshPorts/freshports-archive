@@ -1,2 +1,8 @@
 User-agent: *
+Disallow: /
 Disallow: /*
+Disallow: /msgs
+Disallow: /msgs/
+Disallow: /msgs/*
+
+
