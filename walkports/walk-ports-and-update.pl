@@ -5,6 +5,168 @@
 # ports table accordingly.
 #
 
+# =================================
+sub GetCategoryFromCategories($) {
+   my $categories = shift;
+   my $category;
+
+   ($category) = split(/ /s, $categories);
+
+   return $category;
+}
+
+
+# =================================
+
+#sub GetPortCategory($category, $dbh) {
+sub GetPortCategory($;$) {
+   my $category = shift;
+   my $dbh = shift;
+
+   $sql = "select id from categories where name = '" . $category . "'";
+
+   print "\n",$sql, "\n";
+
+   $sth = $dbh->prepare($sql);
+
+   $sth->execute ||
+        die "Could not execute SQL statement ... maybe invalid?";
+
+
+   @row=$sth->fetchrow_array;
+
+   print "\nGetPortCategory = $sql which gives ", @row[0], "\n";
+
+   return @row[0];
+}
+
+# =================================
+sub GetHomePageFromDESCR($;$) {
+   my $DESCR = shift;
+
+   open F,$DESCR;
+
+   while(<F>){
+      if(/WWW:(.*)/) {
+         $url = $1;
+         $url =~  s/^\s+//g;
+      }
+   }
+
+   return $url;
+}
+
+
+
+sub PortUpdate($;$;$;$;$;$;$;$;$;$;$;$;$;$;$;$) {
+#PortUpdate ($name, $portname, $descrfile, $categories, $portversion, 
+#          $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
+#    $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
+
+   my $name             = shift;
+   my $portname         = shift;
+   my $descpath         = shift;
+   my $categories       = shift;
+   my $portversion      = shift;
+   my $commentfile      = shift;
+   my $maintainer       = shift;
+   my $extractsuffix    = shift;
+   my $mastersites      = shift;
+   my $builddepends     = shift;
+   my $rundepends       = shift;
+   my $shortdescription = shift;
+   my $longdescription  = shift;
+   my $homepage         = shift;
+   my $packageexists    = shift;
+   my $dbh              = shift;
+
+
+if ($name ne $portname) {
+   print "*************** port ('$name') differs from portname('$portname')\n";
+}
+
+print "$name, $portname, $descrfile, $categories, $portversion, ",  \
+      "$commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends, ", \
+      "$builddepends, $rundepends\n";
+
+$category = GetCategoryFromCategories($categories);
+
+print "category = $category", "\n";
+
+   $categoryid = GetPortCategory($category, $dbh);
+   if (!$categoryid) {
+      print "ERROR *** could not find category for $category\n";
+      exit;
+   }
+
+   # update the port, creating it if necessary
+
+   $sql = "select id from ports where name = '$name' and primary_category_id = $categoryid";
+   print "sql = ", $sql, "\n";
+   $sth = $dbh->prepare($sql);
+
+   $sth->execute ||
+      die "Could not execute SQL statement ... maybe invalid?";
+
+   @row=$sth->fetchrow_array;
+
+   if (@row) {
+      print "something found\n";
+   } else {
+      print "nothing found\n";
+   }
+
+   # Get the short description (and escape them)
+   # Get the long description (and escape them)
+   # get homepage
+   # get package exists
+
+   print "port ID found = ", $row[0], "\n";
+  if (!@row) {
+      # no such port.  create it.
+      $sql = "insert into ports (name, description, last_update,                           \
+              primary_category_id, last_update_description, system, version, date_created, \
+              short_description, long_description, maintainer, categories,                 \
+              date_last_refreshed, homepage, master_sites, extract_suffix, package_exists, \
+              status) values (";
+
+      $sql .= "'$name', '$descpath', current_timestamp, $categoryid , '',                 \
+              'FreeBSD', '$portversion', current_timestamp, '$shortdescription',          \
+              '$longdescription', '$maintainer', '$categories', current_timestamp,        \
+              '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
+
+      print "$sql\n";
+
+      $sth = $dbh->prepare($sql);
+
+      $sth->execute ||
+         die "Could not insert statement ... maybe invalid?";
+   } else {
+      # update the time on the port
+      $sql = "update ports set description = '$descpath', last_update =       \ 
+              current_timestamp, version = '$portversion', short_description = \
+              '$shortdescription', long_description = '$longdescription', maintainer = \
+              '$maintainer', categories = '$categories', date_last_refreshed = \
+              current_timestamp, homepage = '$homepage', master_sites = '$mastersites', \
+              extract_suffix = '$extractsuffix', package_exists = '$packageexists', status \
+              = 'N') values (";
+
+      $sql .= "'$name', '$descpath', current_timestamp, $categoryid , '', \
+              'FreeBSD', '$portversion', current_timestamp, '$shortdescription', \
+              '$longdescription', '$maintainer', '$categories', current_timestamp, \
+              '$homepage', '$mastersites', '$extractsuffix', '$packageexists', 'A')";
+
+      print "$sql\n";
+
+      $sth = $dbh->prepare($sql);
+
+      $sth->execute ||
+         die "Could not execute update statement ... maybe invalid?";
+   }
+}
+
+use DBI;
+
 $BASEDIR = "/usr/ports";
 
 $maxlength=0;
@@ -56,6 +218,8 @@ print "10 $rundepends\n";
 print "\n ---------------------------------------- \n";
 
       }
+
+      
    }
    closedir CATHANDLE;
 
