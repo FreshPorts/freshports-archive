@@ -6,6 +6,70 @@
 #
 
 # =================================
+sub PackageExists($) {
+
+   my $package = shift;
+   my $exists  = "N";
+
+   open F,"/usr/local/etc/freshports/packages.exists";
+
+LINE:
+   while(<F>){
+      if(/$package/) {
+         $exists = "Y";
+         last LINE;
+      }
+   }
+   close F;
+                                                                
+   return $exists;                                              
+}  
+
+
+
+# =================================
+sub ReadFile($) {
+
+   my $file = shift;
+
+   open F,$file;
+
+   $content = "";
+   while(<F>){
+      $content .= $_;
+   }
+
+   close F;
+
+   return $content;
+}
+
+
+# =================================
+sub GetDescrAndHomePage($) {
+
+   my $file = shift;
+
+   open F,$file;
+
+   $DESCR = "";
+   while(<F>){
+      $DESCR .= $_;
+      if(/WWW:(.*)/) {
+         $url = $1;
+         $url =~  s/^\s+//g;
+      }
+   }
+
+   close F;                              
+                                                                
+   @result = ($DESCR, $url);                                    
+                                                                
+   return @result;                                              
+}
+
+
+# =================================
 sub GetCategoryFromCategories($) {
    my $categories = shift;
    my $category;
@@ -39,24 +103,6 @@ sub GetPortCategory($;$) {
 
    return @row[0];
 }
-
-# =================================
-sub GetHomePageFromDESCR($;$) {
-   my $DESCR = shift;
-
-   open F,$DESCR;
-
-   while(<F>){
-      if(/WWW:(.*)/) {
-         $url = $1;
-         $url =~  s/^\s+//g;
-      }
-   }
-
-   return $url;
-}
-
-
 
 sub PortUpdate($;$;$;$;$;$;$;$;$;$;$;$;$;$;$;$) {
 #PortUpdate ($name, $portname, $descrfile, $categories, $portversion, 
@@ -200,25 +246,50 @@ print "...now looking at $dirname/$port/Makefile\n";
 #     /usr/home/dan/walkports/pkg/DESCR
 # That's because DESCR is define as .{CURDIR}/pkg/DESCR etc more or less
 #
+
+         $makecommand = "make -V PORTNAME -V PKGNAME -V DESCR -V CATEGORIES -V PORTVERSION " .
+                        "-V COMMENT -V MAINTAINER -V EXTRACT_SUFX -V MASTER_SITES " . 
+                        "-V BUILD_DEPENDS -V RUN_DEPENDS -f $dirname/$port/Makefile";
+
+print "makecommand = $makecommand\n";
          chdir $dirname;
-         ($portname, $descrpath, $categories, $portversion, $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends, $rundepends) = split(/\n/s, `make -V PORTNAME -V DESCR -V CATEGORIES -V PORTVERSION -V COMMENT -V MAINTAINER -V EXTRACT_SUFX -V MASTER_SITES -V BUILD_DEPENDS -V RUN_DEPENDS -f $dirname/$port/Makefile`);
+         ($portname, $packagename, $descrpath, $categories, $portversion, $commentfile,
+          $maintainer, $extractsuffix, $mastersites, $builddepends,
+          $rundepends) = split(/\n/s, `$makecommand`);
 
 print " 0 $dirname\n";
 print " 1 $portname\n";
-print " 2 $descrpath\n";
-print " 3 $categories\n";
-print " 4 $portversion\n";
-print " 5 $commentfile\n";
-print " 6 $maintainer\n";
-print " 7 $extractsuffix\n";
-print " 8 $mastersites\n";
-print " 9 $builddepends\n";
-print "10 $rundepends\n";
+print " 2 $packagename\n";
+print " 3 $descrpath\n";
+print " 4 $categories\n";
+print " 5 $portversion\n";
+print " 6 $commentfile\n";
+print " 7 $maintainer\n";
+print " 8 $extractsuffix\n";
+print " 9 $mastersites\n";
+print "10 $builddepends\n";
+print "11 $rundepends\n";
+
+($longdescription, $hompage) = GetDescrAndHomePage($descrpath);
+
+$shortdescription = ReadFile($commentfile);
+
+$packageexists = PackageExists($packname . "tgz");
+
+print "12 $shortdescription\n";
+print "13 $longdescription\n";
+print "14 $homepage\n";
+print "15 $packageexists\n";
 
 print "\n ---------------------------------------- \n";
 
-      }
+PortUpdate ($dirname, $portname, $descrpath, $categories, $portversion, 
+          $commentfile, $maintainer, $extractsuffix, $mastersites, $builddepends,
+    $rundepends, $shortdescription, $longdescription, $homepage, $packageexists, $dbh);
 
+exit;
+
+      }
       
    }
    closedir CATHANDLE;
