@@ -30,7 +30,7 @@ before we can even consider those items.
 </P>
 
 <P>
-Until we track that file down, please refer to <A HREF="/mantis/">Mantis</A>
+Until we track that file down, please refer to <A HREF="http://mantis.unixthome.org/">Mantis</A>
 for a list of the things we have to do.
 <P>
 

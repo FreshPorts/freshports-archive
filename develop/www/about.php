@@ -39,7 +39,7 @@ Here's what we have on our development box:
 <LI>php4.0.6</LI>
 </UL>
 
-<LI>bug tracking (Harold has installed <A HREF="/mantis/">Mantis</A> as an alternative to gnats; login with guest/guest for now)</LI>
+<LI>bug tracking (Harold has installed <A HREF="http://mantis.unixthome.org/">Mantis</A> as an alternative to gnats; login with guest/guest for now)</LI>
 <LI><A HREF="/cgi-bin/cvsweb.cgi/">cvsweb interface</A> to cvs repository</LI>
 </UL>
 

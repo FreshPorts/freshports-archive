@@ -21,7 +21,7 @@
 <A HREF="mailinglists.html">Mailing lists</A><BR>
 <A HREF="/cgi-bin/cvsweb.cgi">CVS Repository</A><BR>
 <A HREF="current.php">Current work</A><BR>
-<A HREF="/mantis/">Problem reports</A><BR>
+<A HREF="http://mantis.unixathome.org/">Problem reports</A><BR>
 <A HREF="todo.php">Things to do</A><BR>
 <A HREF="new.php">Geek stuff</A><BR>
 <A HREF="developers.php">Developers</A><BR>
@@ -50,7 +50,7 @@ of your installed ports and registers them with FreshPorts.
 
 <P>
 If you'd like to get involved with this project, we urge you to have a look
-at the existing list of tasks in <A HREF="/mantis/">Mantis</A> (login as 
+at the existing list of tasks in <A HREF="http://mantis.unixathome.org/">Mantis</A> (login as 
 guest/guest).  If you see something you'd like to try, let us know.
 Failing that, just join the developer's mailing list and tell us what
 type of work you'd like to do.
