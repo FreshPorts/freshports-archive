@@ -1,0 +1,30 @@
+DIV,BODY,TD,TH,P,FONT,INPUT,LI,UL,FORM,BLOCKQUOTE,A,TR,TABLE,I,H1,H2,H3,H4,H5 {
+  font-family: Helvetica, Arial, Sans-Serif;
+}
+
+SMALL {
+  font-size: 8pt;
+  font-family: Helvetica, Arial, Sans-Serif;
+}
+
+TT,CODE,SAMP {
+  font-family: Courier, Courier-New, Monospace;
+  font-size: 10pt;
+  color: #ff0000;
+}
+
+KBD {
+  font-family: Courier, Courier-New, Monospace;
+  font-size: 10pt;
+  color: #00aa00;
+}
+
+PRE {
+  color: #461b7e;
+}
+
+.MENU {
+  margin-left: 5;
+  margin-right: 10;
+  font-family: Arial, Helvetica, Sans-Serif;
+}
