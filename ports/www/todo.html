@@ -33,6 +33,20 @@ join the develop mailing list and put your hand up.  Details at
     at multiple locations around the world, just to make sure we don't miss
     anything.  It would also entail writing a special URL for the script
     to use which would allow the script to access messages as it needs to.</li>
+
+<li>When an email notification bounces back to us, we need some way of 
+    [at least partially] automating the removal of someone from the 
+    notification list.  In effect we do this:
+
+<pre>
+      set emailbouncecount = emailbouncecount+1 where email = '&lt;bounced addresss&gt;';
+</pre>
+     My guess is that we collect the bounces, parse them for the original 
+     address, then plop them into a web page where we can verify what's been
+     done and set that person's bounce count accordingly.  An admin would then come along
+     verify what's there, and click YES, do it.
+</li>
+   
 </ul>
 </body>
 </html>
