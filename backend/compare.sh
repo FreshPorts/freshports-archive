@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: compare.sh,v 1.3 2003-04-23 15:18:09 dan Exp $
+# $Id: compare.sh,v 1.4 2003-04-23 17:51:00 dan Exp $
 #
 # compare the commits on two different websites
 #
@@ -14,9 +14,9 @@ fi
 . config.sh
 
 fetch -qo source1.txt $SOURCE1 2>&1 > /dev/null
-fetch -qo source1.txt $SOURCE2 2>&1 > /dev/null
+fetch -qo source2.txt $SOURCE2 2>&1 > /dev/null
 
-diff source1.txt source1.txt > diff.txt
+diff source1.txt source2.txt > diff.txt
 
 NUMLINES=`cat diff.txt | wc -l`
 echo $NUMLINES
@@ -34,7 +34,7 @@ then
 	if [   "$FIRSTLINE" != "1d0"  -a  "$FIRSTLINE" != "0a1"  -o  "$THIRDLINE" != '100a100'  -a "$THIRDLINE" != '100d100' ]
 	then
 		echo 'emailing'
-		cat diff.txt | mail -s $SUBJECT dan@langille.org
+		cat diff.txt | mail -s "${SUBJECT}" $MAILTO
 	else
 		echo 'ignoring'
 	fi
