@@ -21,35 +21,22 @@ foreach $dirname (@CATEGORIES) {
         while(($port = readdir(CATHANDLE)))
         {
                 if(-d "$dirname/$port" && $port ne "." && $port ne ".." && $port ne "pkg") {
-#                        open READHANDLE, "$dirname/$port/pkg/COMMENT";
-#                        $lines = <READHANDLE>;
-#                        $COMMENT{$port} = "$lines";
-                        $length = `cat $dirname/$port/pkg/COMMENT | wc -c | awk '{print $1}'`;
 
-#$length = `cat $dirname/$port/pkg/COMMENT | wc -c`;
-$file = "$dirname/$port/pkg/COMMENT";
+($mastersites) = split(/\n/s, `make -V MASTER_SITES -f $dirname/$port/Makefile`);
 
-#print "file = '$file'";
-$length = -s $file;
-                        print "port = $dirname/$port length = '$length'\n";
+
+$length = length($mastersites);
+                        print "port = $dirname/$port master=$mastersites length = '$length'\n";
                         if ($length > $maxlength) {
                                 $maxlength = $length;
                                 $maxport   = $port;
                         }
-                        #print "maxlength = $maxlength\n";
+                        print "maxlength = $maxlength\n";
 
                 }
         }
         closedir CATHANDLE;
 }
-
-#while(($key,$value) = each %COMMENT) {
-#        if(length $value > $maxwidtth) {
-#                $maxlength = length $value;
-#		$maxport  = $key;
-#        }
-#       print "$key:$value";
-#}
 
 print "maximum length: $maxlength in $maxport\n";
 

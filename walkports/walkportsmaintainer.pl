@@ -27,16 +27,23 @@ foreach $dirname (@CATEGORIES) {
                         $length = `cat $dirname/$port/pkg/COMMENT | wc -c | awk '{print $1}'`;
 
 #$length = `cat $dirname/$port/pkg/COMMENT | wc -c`;
-$file = "$dirname/$port/pkg/COMMENT";
+#$file = "$dirname/$port/pkg/COMMENT";
+
+$cat = $dirname;
+($name, $dist, $suff, $sites, $mainemail) = split(/\n/s, `make -V PKGNAME -V DISTNAME -V EXTRACT_SUFX -V MASTER_SITES -V MAINTAINER -f $dirname/$port/Makefile`);
+
+#($extra, $mainemail) = split(/ /s, `grep MAINTAINER`);
 
 #print "file = '$file'";
-$length = -s $file;
+#$length = -s $file;
+
+$length = length($mainemail);
                         print "port = $dirname/$port length = '$length'\n";
                         if ($length > $maxlength) {
                                 $maxlength = $length;
                                 $maxport   = $port;
                         }
-                        #print "maxlength = $maxlength\n";
+                        print "maxlength = $maxlength\n";
 
                 }
         }
