@@ -25,6 +25,10 @@ contributed.
 <li><a href="split.php">split-by-messageid</a> by Dirk Meyer
 </ul>
 
+<h2>Got an opinion?</h2>
+
+You can leave your comments in the <a href="/phorum/">forum</a>.
+
 </body>
 
 </html>
