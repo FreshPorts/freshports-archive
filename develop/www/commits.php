@@ -7,7 +7,7 @@
 The messages are in the mail archives.  We just have to process them.</P>
 
       <?php
-      $numrows = 200;
+      $numrows = 100;
       $database=pg_connect("dbname=FreshPorts2Test user=dan");
       if ($database) {
 

@@ -28,7 +28,7 @@ function GetPortNameFromFileName($file_name) {
 
 }
 
-      $numrows = 500;
+      $numrows = 100;
       $database=pg_connect("dbname=FreshPorts2Test user=dan");
       if ($database) {
 
