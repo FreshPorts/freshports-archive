@@ -68,6 +68,9 @@ FreshPorts2=# select * from element where parent_id is null;
  76142 | net                   |           | D                   | A
  76233 | games                 |           | D                   | A
 </pre></font>
+
+This problem is caused by messages not being properly parsed. They don't include the full ports directory.
+e.g. ports/devel.  Instead they have just devel.
 </li>
    
 </ul>
