@@ -1,0 +1,22 @@
+<VirtualHost 192.168.0.16>
+	ServerAdmin     dan@langille.org
+
+	DocumentRoot    /usr/websites/develop.freshports.org/www
+
+	ServerName      develop.freshports.org
+
+	CustomLog       /usr/websites/logs/develop.freshports.org-access.log common
+	ErrorLog        /usr/websites/logs/develop.freshports.org-error.log
+
+	<Location /classes>
+		IndexOptions    FancyIndexing NameWidth=* DescriptionWidth=*
+		Options         Indexes FollowSymLinks
+		AddDescription	"class for FP2 building block: the element"		element.pm
+		AddDescription	"simple test script for File::Basename module" 		test_FileBasename.pl
+		AddDescription	"creation of a new element"				test_element_create.pl
+		AddDescription	"fetching an element"					test_element_fetch.pl
+		AddDescription	"test the saving/creation of an element"		test_element_save.pl
+		AddDescription	"basic configuration information needed for perl"	config.pm
+	</Location>
+
+</VirtualHost>
