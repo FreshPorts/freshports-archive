@@ -76,6 +76,9 @@ sub GetDescrAndHomePage($) {
    while(<F>){
       $DESCR .= $_;
       if(/WWW:(.*)/) {
+
+#print "found a home page of $url\n";
+
          $url = $1;
          $url =~  s/^\s+//g;
       }
@@ -246,14 +249,19 @@ use DBI;
 $BASEDIR = "/usr/ports";
 
 
-$IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|.|..|pkg|distributed|CVS";
 $IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\.|\\.";
 
-$IGNOREDPORTS = "\\.\\.|\\.|pkg";
+$IGNOREDPORTS = "\\.\\.|\\.|pkg|CVS|apache13-php3-fp-modssl";
 
-$STARTWITHDIR  = "/usr/ports/x11-fonts";
+#$STARTWITHDIR  = "/usr/ports/x11-fonts";
+$STARTWITHDIR = "";
 
-$dbh = DBI->connect('dbi:mysql:freshports','updater','xyzzy');
+print "connecting to production... press enter to continue";
+
+<STDIN>;
+
+#$dbh = DBI->connect('dbi:mysql:freshportstest','root','xyzzy');
+$dbh = DBI->connect('dbi:mysql:freshports','root','xyzzy');
 
 $maxlength=0;
 
@@ -306,6 +314,9 @@ foreach $dirname (@CATEGORIES) {
 
    while(($port = readdir(CATHANDLE))) {
       print "\n... now checking $dirname/$port .... ";
+      if (!-e "$dirname/$port/Makefile") {
+         print " @@@@@@ makefile does not exist (port must be in Attic)\n";
+      } else {
       if (-d "$dirname/$port" && $port !~ /$IGNOREDPORTS/) {
 
 print "...now looking at $dirname/$port/Makefile\n";
@@ -344,7 +355,7 @@ print " 9 $mastersites\n";
 print "10 $builddepends\n";
 print "11 $rundepends\n";
 
-($longdescription, $hompage) = GetDescrAndHomePage($descrpath);
+($longdescription, $homepage) = GetDescrAndHomePage($descrpath);
 
 $shortdescription = ReadFile($commentfile);
 
@@ -375,6 +386,7 @@ PortUpdate ($port, $portname, $category, $descrpath, $categories, $portversion,
       } else {
          print "skipping\n";
       }
+   } # else yes, the Makefile does exist.
       
    }
    closedir CATHANDLE;
@@ -382,4 +394,5 @@ PortUpdate ($port, $portname, $category, $descrpath, $categories, $portversion,
 }
 
 #print "maximum length: $maxlength in $maxport\n";
+
 
