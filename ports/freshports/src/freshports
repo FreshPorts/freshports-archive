@@ -1,5 +1,9 @@
 #!/usr/bin/perl -w
 #
+# $Id: freshports,v 1.3 2002-01-06 23:31:18 dan Exp $
+#
+# Copyright (c) 2001 DVL Software Limited
+#
 # file: freshports
 # author: John P. Campbell
 #
@@ -17,12 +21,16 @@ use HTTP::Request::Common;
 # Send that result to freshports
 # {{{ globals
 $gPkgInfoCmd = "/usr/sbin/pkg_info -Ia";
-$gTempfile = "/tmp/freshports.out";
-$gVersion = "freshports 0.1 alpha - Spring 2001";
+$gTempfile   = "/tmp/freshports.out";
+$gVersion    = "freshports 0.1 alpha - Spring 2001";
+
 my($opt_v,$opt_d,$opt_h,$opt_c) = '';
+
 $mode = '';
-$gUrl = 'http://fp2.unixathome.org/jcampbell/pkg_upload.php';
-$gUrl = 'http://fp2.unixathome.org/jcampbell/test/pkg_upload.php';
+
+$gWebsite = 'http://lists-test.FreshPorts.org/';
+$gUrl     = $gWebsite . 'pkg_upload.php';
+
 # }}}
 # {{{ Parse Commandline Args
 #

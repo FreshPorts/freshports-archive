@@ -1,17 +1,17 @@
-# New ports collection makefile for:	freshports
+# New ports collection makefile for:	FreshPorts
 # Date created:		01 March 2001
 # Whom:			John P. Campbell <jpcampbell@bigfoot.com>
 #
 # $FreeBSD$
 #
 
-PORTNAME=	freshports
-PORTVERSION=	0.3a
+PORTNAME=	FreshPorts
+PORTVERSION=	0.3b
 CATEGORIES=	misc
-MASTER_SITES=	http://www.jpcampbell.org/~jpc/
+MASTER_SITES=	http://www.FreshPorts.org/distfiles/
 DISTNAME=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	jpcampbell@bigfoot.com
+MAINTAINER=	ports@freebsddiary.org
 
 RUN_DEPENDS=	${LOCALBASE}/lib/perl5/site_perl/${PERL_VER}/LWP.pm:${PORTSDIR}/www/p5-libwww
 
