@@ -1,0 +1,5 @@
+This is a script that will take the output of pkg_info and send the resulting 
+packages to be registered in your Freshports watchlist.
+
+John P. Campbell
+jpcampbell@bigfoot.com
