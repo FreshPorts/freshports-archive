@@ -16,7 +16,7 @@
 <p>
 The purpose of this project is to allow users to view the commits of previously
 unavailable items.  Specifically, it will allow users to view the commits
-for /usr/ports/Mk and locations.  FreshPorts contains this informtion,
+for /usr/ports/Mk and locations.  FreshPorts contains this information,
 but there is no method for presenting this information to users.
 
 A typical /usr/ports directory on a FreeBSD system contains the following:
