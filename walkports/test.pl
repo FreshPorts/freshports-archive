@@ -1,22 +1,18 @@
 #!/usr/bin/perl
 
-#$IGNOREDCATS  = "Attic|distfiles|Mk|CVS";
-$IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\.|\\.";
+my $port = "Makefile";
+my $IGNOREDPORTS = "pkg|CVS|apache13-php3-fp-modssl|Makefile";
 
-#$IGNOREDCATS  = qr/Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|..|./;
-
-$value = "Attic";
-
-if ($value =~ /$IGNOREDCATS$/) {
-   print " true\n";
-} else {         
-   print " false\n";
+if ($port =~ /$IGNOREDPORTS/) {
+   print "port is in the IGNORE list... skipping\n";
+} else {          
+   print "port is not to be ignored.\n";
 }
 
-$value = "Atti";
+$port = "pkg\_remove";
 
-if ($value =~ /$IGNOREDCATS$/) {
-   print " true\n";
+if ($port =~ /$IGNOREDPORTS/ || $port eq "." || $port eq "..") {
+   print "port is in the IGNORE list... skipping\n";
 } else {
-   print " false\n";
+   print "port is not to be ignored.\n";
 }
