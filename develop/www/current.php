@@ -126,18 +126,75 @@ to the website and logging in for the first time.
 
 Things to cover:
 
-<OL>
-<LI>What is this website about?</LI>
-<LI>What is a port</LI>
-<LI>Where do ports come from?</LI>
-<LI>Who do I talk to about a port?</LI>
-<LI>How do I get these ports?</LI>
-<LI>How is the website updated?</LI>
-<LI>What does unknown mean for a committers name?</LI>
-<LI>What does unknown mean for a revsion number?</LI>
-<LI>How can I link to your site?</LI>
+<DL>
+<DT>What is this website about?</DT>
+	<DD>
+	This website will help you keep up with the latest releases of your
+	favourite software.  When a new version of the software is available,
+	FreshPorts will send you an email telling you about the change.
+	</DD>
 
-</OL>
+<DT>What is a port</DT>
+	<DD>
+	A port is a simple easy way to install an application.
+	A port is a collection of files.  These files contain the location
+	of the source file, any patches which must be appplied,
+	instructions for building the application, and the installation
+	procedure.  Removing an installed port is also easy.  For full
+	details on how to use ports, please refer to the offical port
+	documents in the <A HREF="http://www.FreeBSD.org/handbook/">FreeBSD
+	Handbook</A>.
+	</DD>
+<DT>Where do ports come from?</DT>
+	<DD>Ports are created by other FreeBSD volunteers, just like you
+	and just like the creators of FreshPorts.  The FreshPorts team does
+	not create ports; we just tell you about the latest changes.  The
+	FreeBSD Ports team creates, maintains, and upgrades the ports.
+	</DD>
+<DT>Who do I talk to about a port?</DT>
+	<DD>The official mailing list is freebsd-ports&#64;freebsd.org.
+		More information all FreeBSD mailing lists can be obtained
+		from <A HREF="http://www.FreeBSD.org/handbook/eresources.html#ERESOURCES-MAIL">FreeBSD Mailing Lists</A>.
+		You can ask for help there and in our <A HREF="/phorum/">Support
+		Forum</A>.
+<DT>How do I get these ports?</DT>
+	<DD>For full information on how to obtain the ports which appear on
+	this webite, please see <A HREF="http://www.FreeBSD.org/ports/">FreeBSD Ports</A>.
+	The easist way to get a port is via cvsup.  An abbreviated example is
+	<BR><BR>
+	cvsup -h cvsup.your.fav.server /usr/share/examples/cvsup/ports-supfile
+	</DD>
+<DT>How is the website updated?</DT>
+	<DD>
+	The source code for the entire FreeBSD operating system and the Ports tree
+	are stored in the official <A HREF="http://www.FreeBSD.org/cgi/cvsweb.cgi">FreeBSD 
+	repository</A>.  Each time a change is committed to this <A HREF="http://cvshome.org/">CVS</A>
+	repository, a mail message is sent out to the cvs-all mailing list.  FreshPorts
+	takes these mail messages, parses them, and then loads them into a database.
+	In theory, it's fairly straight forward.  In practice, there's much more to
+	it than first meets the eye.  The website is updated as soon as the message
+	arrives.
+	</DD>
+<DT>What does unknown mean for a revsion number?</DT>
+	<DD>It means the data has been converted from an earlier
+		version of the FreshPorts database that did not record this information.
+	</DD>
+<DT>How can I link to your site?</DT>
+	<DD>Yes, thank you, you can.  No need to ask us.  Just go ahead and do it.
+		We prefer the name FreshPorts (one word, mixed case). The following 
+		HTML is a good place to start:<BR><BR>
+
+		&lt;A HREF="http://www.freshports.org/"&gt;FreshPorts&lt;/A&gt;
+	</DD>
+<DT>Why do I need a different login for the Forums?</DT>
+	<DD>
+	You only need a login for the <A HREF="/phorum/">forums</A> if
+	you want to use a login.  A login will ensure that only you can
+	post under the name you enter.  It is a separate login because
+	we didn't write the <A HREF="http://www.phorum.org/">Phorum software</A>
+	used to implement for forums.
+	</DD>
+</DL>
 
 <H2>Features to add</H2>
 
@@ -145,6 +202,33 @@ Things to cover:
 <LI>Viewing all the commits for a given day</LI>
 <LI>set robots.txt up....</LI>
 </OL>
+
+<H2>New Features</H2>
+<DL>
+<DT>Face lift</DT>
+	<DD>New fonts, different layout</DD>
+<DT>full commit messages<DT>
+	<DD>The switch to XML input allows us to capture more data</DD>
+<DT>URLs mirror directory struture</DT>
+	<DD>You know the path to your favourite ports via /usr/ports.  Use the 
+		same path in FreshPorts (e.g <A HREF="/devel/portupgrade/">sysutils/portupgrade</A>).
+	</DD>
+<DT>one-click watch list add/remove</DT>
+	<DD>See a port you like? You can add it to your watch list with 
+		a single click.
+	</DD>
+<DT>link to commit details from front page</DT>
+	<DD>Want to know what files were changed in this commit?  It's now
+	just one click away.  One more click will take to you the FreeBSD
+	CVS repository.</DD>
+<DT>Forums are back!</DT>
+	<DD>The <A HREF="/phorum/">support forums</A> are back, better than ever</DD>
+<DT>Use your pkg_info output to update your watch list<DT>
+	<DD>pkg_info displays list of the ports installed 
+		on your system.  Now you can use <A HREF="/pkg_upload.php">our scripts</A>
+		to use this data to upgrade your watch list!
+	</DD>
+</DL>
 
 <H2>Watch list upload</H2>
 
