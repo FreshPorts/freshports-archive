@@ -24,7 +24,7 @@ which are involved with moving from FreshPorts to FreshPorts2.
 
 <P>
 The original FreshPorts database used <A HREF="http://www.mySQL.org/">mySQL</A>.
-This worked very well.  Two of the major reason for moving to <A HREF="http://www.postgresql.org/">PostgreSQL</A>
+This worked very well.  Two of the major reasons for moving to <A HREF="http://www.postgresql.org/">PostgreSQL</A>
 were
 
 <UL>
@@ -34,7 +34,8 @@ were
 
 Of the two, stored procedures (SP) is the most important.  The flexibility
 provided by SP means that the new features included in FreshPort2 were 
-much easier to create.
+much easier to create. Yes, we know mySQL will soon have SP support, but
+I'm sorry, they were too late....
 
 </P>
 
@@ -60,7 +61,7 @@ and the database is updated.
 FreshPorts was created for the <A HREF="http://www.FreeBSD.org/">FreeBSD</A>
 ports tree but it was designed to be generic in nature and to ultimately 
 handle any ports tree.  To use the FP2 database, a given source tree (e.g. NetBSD, OpenBSD)
-needs to supply their cvs change in XML format according to our DTD.
+needs to supply their cvs changes in XML format according to our DTD.
 </P>
 </BODY>
 </HTML>
