@@ -200,6 +200,12 @@ CREATE TYPE element_type AS (
         isport     boolean);
 </pre></blockquote>
 
+<h2>CAUTION: Virtual categories are not handled!</h2>
+
+<p>
+The above approach will not work for virtual categories.  Ports do not reside within virtual categories.
+Ports exist only within physical categories.  If the above fetch fails, we might want to check for virtual categories.
+
 <h2>Sample database</h2>
 
 <p>
