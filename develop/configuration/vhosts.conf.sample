@@ -8,6 +8,11 @@
 	CustomLog       /usr/websites/logs/develop.freshports.org-access.log common
 	ErrorLog        /usr/websites/logs/develop.freshports.org-error.log
 
+	<Location /msgs>
+		IndexOptions	FancyIndexing NameWidth=* DescriptionWidth=*
+		Options			Indexes FollowSymLinks
+	</Location>
+
 	<Location /classes>
 		IndexOptions    FancyIndexing NameWidth=* DescriptionWidth=*
 		Options         Indexes FollowSymLinks
