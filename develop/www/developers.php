@@ -66,13 +66,13 @@ to <CODE>vhosts.conf</CODE>.  Subsitute your own user name for <B>user</B>.
 </P>
 
 <BLOCKQUOTE><PRE>
-&LT;VirtualHost 192.168.0.16&GT;
+&lt;VirtualHost 192.168.0.16&gt;
         ServerAdmin     dan@langille.org
         DocumentRoot    /home/<B>user</B>/code/www
         ServerName      <B>user</B>.freshports.org
         ErrorLog        /usr/websites/logs/<B>user</B>.freshports.org-error.log
         CustomLog       /usr/websites/logs/<B>user</B>.freshports.org-access.log common
-&LT;/VirtualHost&GT;
+&lt;/VirtualHost&gt;
 </PRE></BLOCKQUOTE>
 
 <P>
