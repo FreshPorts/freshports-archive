@@ -122,6 +122,12 @@ Ports which are not found on disk are flagged as such.  The script will also tel
 were found on disk but not in FreshPorts. This script should be upgraded and run on a regular basis.
 </P>
 
+<P>
+I guess we can write a stored procedure 
+(freshports_mark_as_found('ports/security/logcheck')) which marks the port
+as found and returns 1 if found, zero otherwise.  Run that for each
+port.  Store the not found ones in a table.
+</P>
 
 <H3>Things to consider</H3>
 
@@ -144,8 +150,70 @@ Actually, this point may not affect the migration process, but it may be worthwh
 <H2>Recommendations</H2>
 
 <P>
-At this point in time, it appears the best strategy is to migrate the existing FreshPorts data.
+At this point in time, it appears the best strategy is to migrate the 
+existing FreshPorts data.  It also looks like the best way to do this will
+be by first exporting the FreshPorts data into an XML format.  That
+data can then be imported directly into FP2 with a miniumum of effort.
+We may have to slightly modify the XML DTD in order to preserve some
+data.  At present we know about these items: 
 </P>
+
+<UL>
+<LI>change_log.date_added (old) => commit_log.date_added (new)</LI>
+</UL>
+
+<P>
+This will require changes to the following code:
+</P>
+
+<UL>
+<LI>scripts/load_xml_into_db.pl::SaveUpdateToDB - it might be a good 
+    time to create a class for commit_log.  All we have to do is
+    add a new field to the DTD, check for it, and use it if supplied.
+    Otherwise, use now().  We might want to add a command line option
+    which will then use that field if found (safety measure).
+</LI>
+</UL>
+
+<P>
+The data should be processed in commit_date order.  This will ensure
+elements are added/deleted in the correct order.
+</P>
+
+<H2>Details - 1 February 2002</H2>
+
+<P>
+The main issue is now population of the XML template.  Here are a few things 
+to consider:
+</P>
+
+<UL>
+<LI>Timezones - FP1 does not contain timezones.  PST will be assumed.</LI>
+<LI>Date Added - this is for diagnostic purposes only.</LI>
+</UL>
+
+<H2>Update - 2 February 2002</H2>
+
+<P>
+We now have a script (<B>ExportXMLFromDB.pl</B>) which creates XML.  
+Preliminary tests look good.  The next step is to populate the database 
+with a full ports tree.  Then migrate in the commit data and compare.
+</P>
+
+<H2>Update -7 February 2002</H2>
+
+<P>
+<B>ExportXMLFromDB.pl</B> appears to work well.  I've had to make a couple of changes to it
+</P>
+
+<UL>
+<LI>don't export deleted ports - they won't exist in the ports tree and we won't 
+    be able to refresh the port.  This does mean we lose the history for about 451
+    deleted ports.  We can import them later if we need to.
+</LI>
+
+<LI>Deal with Imports - they need to be translated to Adds.</LI>
+</UL>
 
 </BODY>
 </HTML>
