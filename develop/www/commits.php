@@ -16,17 +16,17 @@ The messages are in the mail archives.  We just have to process them.</P>
 # otherwise, it joins the whole table and that takes quite a while
 #
 $sql = " 
-select commit_log.commit_date				as commit_date_raw, 
-       commit_log.id					as commit_log_id,
-       commit_log.description				as commit_description, 
+select commit_log.commit_date							as commit_date_raw, 
+       commit_log.id									as commit_log_id,
+       commit_log.description							as commit_description, 
        to_char(commit_log.commit_date, 'YYYY-Mon-DD')	as commit_date,
-       to_char(commit_log.commit_date, 'HH24:MI')	as commit_time,
-       commit_log_elements.id				as cle_id,
-       commit_log_elements.element_id			as cle_element_id,
-       commit_log_elements.revision_name		as cle_revision_name,
-       element_pathname(element.id)			as name
+       to_char(commit_log.commit_date, 'HH24:MI')		as commit_time,
+       commit_log_elements.id							as cle_id,
+       commit_log_elements.element_id					as cle_element_id,
+       commit_log_elements.revision_name				as cle_revision_name,
+       element_pathname(element.id)						as name
   from commit_log, commit_log_elements, element
- where commit_log.commit_date > '2001-09-29' 
+ where commit_log.commit_date         > '2002-01-29' 
    and commit_log.id                  = commit_log_elements.commit_log_id
    and commit_log_elements.element_id = element.id
  order by commit_log.commit_date desc,
