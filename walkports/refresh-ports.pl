@@ -14,8 +14,7 @@ my $IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\
 #my $STARTWITHDIR  = "/usr/ports/x11-fonts";
 my $STARTWITHDIR = "";
 
-print "connecting to production... press enter to continue";
-
+#print "connecting to production... press enter to continue";
 #<STDIN>;
 
 #my $dbh = DBI->connect('dbi:mysql:freshportstest','root','xyzzy');
@@ -46,7 +45,7 @@ while (@row=$sth->fetchrow_array) {
    push @PORTS, "$BASEDIR/$row[1]:$row[2]"
 }
 
-  print "press enter to continue ";
+#  print "press enter to continue ";
 #  <STDIN>;
 
 my $port;
@@ -57,11 +56,16 @@ foreach $dirname (@PORTS) {
   ($dirname, $port) = split /:/,$dirname, 2;
 
   print " which becomes $dirname : $port\n";
-  print "press enter to continue ";
+
+#  print "press enter to continue ";
 #  <STDIN>;
+
   RefreshPort($dirname, $port, $dbh);
-  print "press enter to continue ";
+
+#  print "press enter to continue ";
 #  <STDIN>;
 }
 
 $dbh->disconnect();
+
+`touch /usr/local/etc/freshports/msgs/lastupdate`

@@ -1,18 +1,20 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
-my $port = "Makefile";
-my $IGNOREDPORTS = "pkg|CVS|apache13-php3-fp-modssl|Makefile";
+use strict;
 
-if ($port =~ /$IGNOREDPORTS/) {
-   print "port is in the IGNORE list... skipping\n";
-} else {          
-   print "port is not to be ignored.\n";
+
+
+sub PackageExists($) {                                
+                                                      
+   my $package = shift;
+
+   $package = 'abc';
+
 }
 
-$port = "pkg\_remove";
+my $packageexists = 'xyz';
 
-if ($port =~ /$IGNOREDPORTS/ || $port eq "." || $port eq "..") {
-   print "port is in the IGNORE list... skipping\n";
-} else {
-   print "port is not to be ignored.\n";
-}
+print "before $packageexists\n";
+PackageExists($packageexists);
+print "after $packageexists\n";
+

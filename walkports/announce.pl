@@ -24,7 +24,7 @@ print SENDMAIL <<"EOF";
 From: FreshPorts announcement <freshports-announce\@freshports.org>
 To: freshports-watch\@freshports.org
 Bcc: $Bcc
-Subject: FreshPorts accouncement
+Subject: FreshPorts announcement
 
 Hi folks.
 

@@ -34,6 +34,7 @@ sub CompileWatchNotifyList($;$) {
               and users.watchnotifyfrequency    = '$Frequency' \
               and users.watchnotifyfrequency    = watch_notice.frequency \
               and ports.last_update            >= watch_notice.last_sent \
+              and users.emailbouncecount        = 0 \
             group by users.id";
 
    print "sql is $sql\n";
@@ -87,11 +88,11 @@ if (($#ARGV+1) == 1) {
 
       $Bcc = CompileWatchNotifyList($Frequency, $dbh);
 
-#      SetWatchLastNoticeDate($Frequency, $dbh);
+      SetWatchLastNoticeDate($Frequency, $dbh);
 
       $dbh->disconnect();
 
-#      SendWatchNotice($Bcc);
+      SendWatchNotice($Bcc);
 
       print "message sent to users\n";
    } else {
