@@ -1,7 +1,7 @@
 <HTML>
 
 <HEAD>
-<TITLE>FreshPorts - project website</TITLE>
+<TITLE>FreshPorts - Some of the things to do</TITLE>
 </HEAD>
 
 <BODY>
