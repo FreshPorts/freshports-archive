@@ -24,18 +24,18 @@ A typical /usr/ports directory on a FreeBSD system contains the following:
 <blockquote><pre class="code">
 <b>INDEX</b>           biology         ftp             misc            textproc
 <b>INDEX-5</b>         cad             games           multimedia      ukrainian
-<b>INDEX.db</b>        chinese         german          net             vietnamese
-<b>LEGAL</b>           comms           graphics        news            www
-<b>MOVED</b>           converters      hebrew          palm            x11
-<b>Makefile</b>        databases       hungarian       picobsd         x11-clocks
-<b>Mk</b>              deskutils       irc             polish          x11-fm
-<b>README</b>          devel           japanese        portuguese      x11-fonts
-<b>Templates</b>       distfiles       java            print           x11-servers
-<b>Tools</b>           dns             korean          russian         x11-toolkits
-archivers       editors         lang            science         x11-wm
-astro           emulators       mail            security
-audio           finance         math            shells
-benchmarks      french          mbone           sysutils
+<b>LEGAL</b>           chinese         german          net             vietnamese
+<b>MOVED</b>           comms           graphics        news            www
+<b>Makefile</b>        converters      hebrew          palm            x11
+<b>Mk</b>              databases       hungarian       picobsd         x11-clocks
+<b>README</b>          deskutils       irc             polish          x11-fm
+<b>Templates</b>       devel           japanese        portuguese      x11-fonts
+<b>Tools</b>           distfiles       java            print           x11-servers
+archivers       dns             korean          russian         x11-toolkits
+astro           editors         lang            science         x11-wm
+audio           emulators       mail            security
+benchmarks      finance         math            shells
+french          mbone           sysutils
 </code></blockquote>
 
 <p>
@@ -214,7 +214,6 @@ that only two categories are supplied.
 <blockquote><pre>
 INDEX
 INDEX-5
-INDEX.db
 LEGAL
 MOVED
 Makefile
