@@ -159,12 +159,52 @@ it is not a category, but it is a port.  Similar examples follow:
 
 </ul>
 
+<p>
+Here are the functions:
+
+<blockquote><pre>
+CREATE OR REPLACE function IsPort(int) returns int as '
+   SELECT id
+     FROM ports
+    WHERE element_id = $1;
+' LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE function IsCategory(int) returns int as '
+   SELECT id
+     FROM categories
+    WHERE element_id = $1;
+' LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION elementGet (text) RETURNS SETOF element_type AS '
+   SELECT id,
+          name::text,
+          directory_file_flag::text,
+          status::text,
+          case when IsCategory(Pathname_ID($1)) IS NULL THEN FALSE ELSE TRUE END,
+          case when IsPort(    Pathname_ID($1)) IS NULL THEN FALSE ELSE TRUE END
+     FROM element
+    WHERE id = PathName_ID($1);
+' LANGUAGE SQL STABLE;
+</pre></blockquote>
+
+You will notice that this function returns a SETOF element_type.  This type must first
+be declared:
+
+<blockquote><pre>
+CREATE TYPE element_type AS (
+        id         integer,
+        name       text,
+        "type"     text,
+        status     text,
+        iscategory boolean,
+        isport     boolean);
+</pre></blockquote>
+
 <h2>Sample database</h2>
 
 <p>
 A sample PostgreSQL database containing the above functions, sample tables 
-and data can be found <a href="database.sql">here</a>. [SORRY, this isn't available
-yet]
+and data can be found <a href="freshports_directories_example.tgz">here</a> (8 MB).
 
 <p>
 The database contains the following entries from /usr/ports.  If the entry
