@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# $Id: element.pm,v 1.1.1.1 2001-11-05 17:04:30 dan Exp $
+# $Id: element.pm,v 1.2 2001-11-06 19:21:09 dan Exp $
 #
 
 package FreshPorts::Element;
@@ -51,7 +51,7 @@ sub save {
 		$this->{status} = $Active;
 	}
 
-	# if we don't have the parent id, derive it from the pathanem
+	# if we don't have the parent id, derive it from the pathname
 	if (!$this->{parent_id}) {
 		#
 		# our parent's name is the basename of our pathname
@@ -114,7 +114,7 @@ sub FetchByID {
 	my $dbh		= $this->{dbh};
 
 	my $sql = "select *, element_pathname(id) as pathname from element where id = $this->{id}";
-#	print "sql = '$sql'\n";
+	print "sql = '$sql'\n";
 
 	my $sth = $dbh->prepare($sql);
 	if (!$sth->execute) {
@@ -133,6 +133,8 @@ sub FetchByID {
 	$this->{status}				= $row->{status};
 	$this->{pathname}			= $row->{pathname};
 
+	print "found id = $this->{id}\n";
+
 	return $this->{id};
 }
 
@@ -149,6 +151,7 @@ sub FetchByName {
 
 	my $tmp = $dbh->quote("things");
 	$sql = "select Pathname_ID(" . $dbh->quote($this->{pathname}) . ")";
+	print "sql = '$sql'\n";
 
 	$sth = $dbh->prepare($sql);
 	if (!$sth->execute) {
@@ -161,9 +164,15 @@ sub FetchByName {
 	$sth->finish();
 	$this->{id} = $row[0];
 
+	print "found id = $this->{id}\n";
+
 	# now that we have the ID for this name, let's fetch it...
 	#
-	return $this->FetchByID();
+	if ($this->{id}) {
+		return $this->FetchByID();
+	} else {
+		return $this->{id};
+	}
 }
 
 1;
