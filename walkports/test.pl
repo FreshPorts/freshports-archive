@@ -1,17 +1,22 @@
 #!/usr/bin/perl
 
-($name, $dist, $suff, $sites, $mainemail) = split(/\n/s, `make -V PKGNAME -V DISTNAME -V EXTRACT_SUFX -V MASTER_SITES -V MAINTAINER -f /usr/ports/security/logcheck/Makefile`);
+#$IGNOREDCATS  = "Attic|distfiles|Mk|CVS";
+$IGNOREDCATS  = "Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|\\.\\.|\\.";
 
-#print "name=$name\ndist=$dist\nsuff=$suff\nsite=$sites\nmaint=$mainemail\n";
+#$IGNOREDCATS  = qr/Attic|distfiles|Mk|Tools|Templates|pkg|distributed|CVS|..|./;
 
-#$length=length($mainemail);
+$value = "Attic";
 
-#print "length = $length\n";
+if ($value =~ /$IGNOREDCATS$/) {
+   print " true\n";
+} else {         
+   print " false\n";
+}
 
-#($extra, $mainemail) = split(/ /s, `grep MAINTAINER /usr/ports/security/logcheck/Makefile`);
+$value = "Atti";
 
-#chomp($mainemail);
-
-($package, $port) = split(/\n/s, `make -V PKGNAME -V PORTNAME -f /usr/ports/security/logcheck/Makefile`);
-
-print "package='$package'\nport=$port\n";
+if ($value =~ /$IGNOREDCATS$/) {
+   print " true\n";
+} else {
+   print " false\n";
+}
