@@ -54,6 +54,10 @@ Failing that, just join the developer's mailing list and tell us what
 type of work you'd like to do.
 </P>
 
+<H3>New look website</H3>
+
+<P>The new FP2 website is at <A HREF="http://fp2.FreshPorts.org/">http://fp2.FreshPorts.org/</A>.</P>
+
 </TD>
 </TR>
 
