@@ -46,6 +46,29 @@ join the develop mailing list and put your hand up.  Details at
      done and set that person's bounce count accordingly.  An admin would then come along
      verify what's there, and click YES, do it.
 </li>
+
+<li>Fix the orphaned elements which don't live under the /ports tree when they should.
+    Here's a short example:
+
+<font face="Courier">
+<pre>
+FreshPorts2=# select * from element where parent_id is null;
+  id   |         name          | parent_id | directory_file_flag | status 
+-------+-----------------------+-----------+---------------------+--------
+ 73628 | www                   |           | D                   | A
+ 41314 | src                   |           | D                   | A
+     1 | doc                   |           | D                   | A
+  2137 | ports                 |           | D                   | A
+ 76073 | CVSROOT               |           | D                   | A
+ 76075 | russian               |           | D                   | A
+ 76084 | archivers             |           | D                   | A
+ 76097 | devel                 |           | D                   | A
+ 76111 | sys                   |           | D                   | A
+ 76122 | textproc              |           | D                   | A
+ 76142 | net                   |           | D                   | A
+ 76233 | games                 |           | D                   | A
+</pre></font>
+</li>
    
 </ul>
 </body>
