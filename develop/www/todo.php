@@ -34,8 +34,6 @@ before we can even consider those items.
 <P>This is our most urgent requirement.  We need <A HREF="/classes">perl classes</A> for the following:
 
 <UL>
-<LI>port</LI>
-<LI>category</LI>
 <LI>commit_log</LI>
 <LI>commit_log_element</LI>
 <LI>element_revision</LI>
