@@ -1,0 +1,92 @@
+#!/usr/bin/perl -w
+#
+# file: freshports
+# author: John P. Campbell
+#
+
+# requires p5-libwww
+
+# includes {{{
+use Getopt::Long;
+Getopt::Long::Configure ("bundling");
+use LWP::UserAgent;
+use HTTP::Request::Common;
+# }}}
+
+# Open a pipe to pkg_info -Ia
+# Send that result to freshports
+# globals {{{
+$gPkgInfoCmd = "/usr/sbin/pkg_info -Ia";
+$gTempfile = "/tmp/freshports.out";
+$gVersion = "freshports 0.1 alpha - Spring 2001";
+my($opt_v,$opt_d,$opt_h,$opt_c) = '';
+$mode = '';
+$gUrl = 'http://fp2.unixathome.org/jcampbell/pkg_upload.php';
+$gUrl = 'http://fp2.unixathome.org/jcampbell/test/pkg_upload.php';
+# }}}
+# Parse Commandline Args {{{
+#
+#
+my($debug,$version,$help) = '';
+&GetOptions(
+	'version' 	=> \$opt_v,
+	'v' 		=> \$opt_v,
+	'help' 		=> \$opt_h,
+	'h' 		=> \$opt_h,
+	'debug' 	=> \$opt_d,
+	'd' 		=> \$opt_d,
+	'c' 		=> \$opt_c,
+	'clean' 	=> \$opt_c
+);
+if ($opt_v) {
+	print "\n$gVersion\n\n";
+	exit();
+}
+if ($opt_h) {
+	print "Usage: freshports\n\n";
+	print "-h --help	this information\n";
+	print "-v --version	version information\n";
+	print "-d --debug	print verbose debug infomation\n\n";
+	print "-c --clean	clear watch list before uploading\n\n";
+	exit();
+} 
+if ($opt_d) {
+	$mode .= 'd';
+	print "Entering Debug mode\n";
+} 
+if ($opt_c) {
+	$mode .= 'c';
+	print "Do you really want to clean out your existing watch list yes/[no]? "; 
+	chomp($answer = <>);
+	if ($answer ne "yes") {
+		exit();
+	}
+}
+#}}}
+
+my($user,$pw) ;
+print "Enter UserID For Freshports: ";
+chomp( $user = <> );
+print "Enter Password For Freshports: ";
+system "stty -echo";
+chomp( $pw  = <> );
+system "stty echo";
+print "\n";
+
+print "Generating Package List...\n";
+system("$gPkgInfoCmd > $gTempfile"); 
+print "Contacting $gUrl...\n";
+
+$ua = LWP::UserAgent->new;
+my $res = $ua->request( 
+	POST $gUrl,
+    Content_Type => 'form-data',
+	Content      => [ 	mode => $mode,
+						user => $user,
+						pw	=>	$pw,
+                       	pkg_info => [$gTempfile],
+                    ]
+);
+
+# Print output
+print $res->as_string;
