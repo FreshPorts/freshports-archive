@@ -21,7 +21,7 @@
 <A HREF="mailinglists.html">Mailing lists</A><BR>
 <A HREF="/cgi-bin/cvsweb.cgi">CVS Repository</A><BR>
 <A HREF="current.php">Current work</A><BR>
-<A HREF="/mantis/">Bugs</A><BR>
+<A HREF="/mantis/">Problem reports</A><BR>
 <A HREF="todo.php">Things to do</A><BR>
 <A HREF="new.php">Geek stuff</A><BR>
 <A HREF="developers.php">Developers</A><BR>
