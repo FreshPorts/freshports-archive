@@ -1,5 +1,5 @@
 <head>
-      <title>PostgreSQL test - last 100 commits</title>
+      <title>ports  - PostgreSQL test - last 100 commits</title>
       <body>
 <p>This window contains the last 100 commits.  Those rows containing N/A in subject have been imported from FreshPorts1.
 </p>
@@ -32,14 +32,24 @@ select DISTINCT commit_log.commit_date as commit_date_raw,
        to_char(commit_log.commit_date, 'YYYY-Mon-DD') as commit_date,
        to_char(commit_log.commit_date, 'HH24:MI') as commit_time,
 	   commit_log_port.port_id as port_id,
-	   element_pathname(ports.element_id) as full_file_name
-  from commit_log_port, commit_log, ports
+	   categories.name as category,
+	   categories.id   as category_id,
+	   element.name    as port,
+	   ports.version   as version,
+	   element.status    as status,
+	   ports.needs_refresh  as needs_refresh,
+	   ports.broken         as broken,
+	   ports.forbidden      as forbidden,
+	   ports.broken         as broken
+  from commit_log_port, commit_log, ports, element, categories
  where commit_log.commit_date        > '2001-09-29'
    and commit_log_port.commit_log_id = commit_log.id
    and commit_log_port.port_id       = ports.id
+   and categories.id                 = ports.category_id
+   and element.id                    = ports.element_id
 order by commit_log.commit_date desc,
-commit_log.id
- limit 100";
+         commit_log_id
+         limit $numrows";
 
 #echo "\n<pre>sql=$sql</pre>\n";
 
@@ -103,16 +113,18 @@ $HTML = "";
 						}
 
 						$HTML .= '<a href="port-description.php3?port=' . $myrow["port_id"]  . '">';
-						$HTML .= "<b>" . GetPortNameFromFileName($myrow["full_file_name"]);
-#						if (strlen($myrow["version"]) > 0) {
-#							$HTML .= ' ' . $myrow["version"];
-#						}
+						$HTML .= "<B>" . $myrow["port"];
+						
+						if (strlen($myrow["version"]) > 0) {
+							$HTML .= ' ' . $myrow["version"];
+						}
 
 						$HTML .= "</b></a>";
-#
-#						$URL_Category = "category.php3?category=" . $myrow["category_id"];
-#						$HTML .= ' <font size="-1"><a href="' . $URL_Category . '">' . $myrow["category"] . '</a></font>';
-#
+
+
+						$URL_Category = "category.php3?category=" . $myrow["category_id"];
+						$HTML .= ' <font size="-1"><a href="' . $URL_Category . '">' . $myrow["category"] . '</a></font>';
+
 #						// indicate if this port needs refreshing from CVS
 #						if ($myrow["status"] == "D") {
 #							$HTML .= '<br><font size="-1">[deleted]</font>';
@@ -121,11 +133,11 @@ $HTML = "";
 #							$HTML .= ' <font size="-1">[refresh]</font>';
 #						}
 #
-#						if ($myrow["date_created"] > Time() - 3600 * 24 * $DaysMarkedAsNew) {
-#							$MarkedAsNew = "Y";
-#							$HTML .= "<img src=\"/images/new.gif\" width=28 height=11 alt=\"new!\" hspace=2 > ";
-#						}
-#
+						if ($myrow["date_created"] > Time() - 3600 * 24 * $DaysMarkedAsNew) {
+							$MarkedAsNew = "Y";
+							$HTML .= "<img src=\"/images/new.gif\" width=28 height=11 alt=\"new!\" hspace=2 > ";
+						}
+
 
 						$j++;
 						$MultiplePortsThisCommit = 1;
@@ -137,12 +149,12 @@ $HTML = "";
 					$HTML .= '<font size="-1">' . $myrow["commit_time"] . '</font>';
 
 					$HTML .= "</td><td valign='top'>";
-#					if ($myrow["forbidden"]) {
-#						$HTML .= '<img src="images/forbidden.gif" alt="Forbidden" width="20" height="20" hspace="2">';
-#					}
-#					if ($myrow["broken"]) {
-#						$HTML .= '<img src="images/broken.gif" alt="Broken" width="17" height="16" hspace="2">';
-#					}
+					if ($myrow["forbidden"]) {
+						$HTML .= '<img src="images/forbidden.gif" alt="Forbidden" width="20" height="20" hspace="2">';
+					}
+					if ($myrow["broken"]) {
+						$HTML .= '<img src="images/broken.gif" alt="Broken" width="17" height="16" hspace="2">';
+					}
 					$HTML .= '<PRE>' . htmlspecialchars($myrow["commit_description"]) . "</PRE></td>\n";
 
 					$HTML .= "</tr>\n";
