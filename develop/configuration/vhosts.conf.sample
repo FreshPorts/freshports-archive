@@ -1,4 +1,10 @@
-<VirtualHost 192.168.0.56>
+#
+# $Id: vhosts.conf.sample,v 1.7 2002-09-10 12:47:34 dan Exp $
+#
+# Copyright (c) 1998-2002 DVL Software Limited
+#
+
+<VirtualHost *>
 	ServerAdmin     dan@langille.org
 
 	DocumentRoot    /usr/websites/develop.freshports.org/www
