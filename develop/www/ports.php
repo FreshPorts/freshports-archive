@@ -10,14 +10,14 @@ The messages are in the mail archives.  We just have to process them.</P>
 
 function GetPortNameFromFileName($file_name) {
 
-	list($subtree, $category, $port, $extra) = split('/', $file_name, 4);
+	list($fake, $subtree, $category, $port, $extra) = split('/', $file_name, 4);
 
 #	return $subtree;
 	return "$category/$port";
 
 }
 
-      $numrows = 300;
+      $numrows = 100;
       $database=pg_connect("dbname=FreshPorts2Test user=dan");
       if ($database) {
 
@@ -26,25 +26,20 @@ function GetPortNameFromFileName($file_name) {
 # otherwise, it joins the whole table and that takes quite a while
 #
 $sql = " 
-select commit_log.commit_date									as commit_date_raw, 
-       commit_log.id											as commit_log_id,
-       commit_log.description									as commit_description, 
-       to_char(commit_log.commit_date, 'YYYY-Mon-DD')			as commit_date,
-       to_char(commit_log.commit_date, 'HH24:MI')				as commit_time,
-       commit_log_elements.id									as cle_id,
-       commit_log_elements.element_id							as cle_element_id,
-       commit_log_elements.revision_name						as cle_revision_name,
-       element_pathname(element.id)								as file_name
-  from commit_log_port, commit_log, commit_log_elements, element
- where commit_log.commit_date					> '2001-09-29'
-   and commit_log_port.commit_log_id			= commit_log.id
-   and commit_log_port.commit_log_element_id	= commit_log_elements.id
-   and commit_log_elements.element_id			= element.id
-
- order by	commit_log.commit_date desc,
-			commit_log.id,
-			file_name
- limit $numrows";
+select DISTINCT commit_log.commit_date as commit_date_raw,
+       commit_log.id as commit_log_id,
+       commit_log.description as commit_description,
+       to_char(commit_log.commit_date, 'YYYY-Mon-DD') as commit_date,
+       to_char(commit_log.commit_date, 'HH24:MI') as commit_time,
+	   commit_log_port.port_id as port_id,
+	   element_pathname(ports.element_id) as full_file_name
+  from commit_log_port, commit_log, ports
+ where commit_log.commit_date        > '2001-09-29'
+   and commit_log_port.commit_log_id = commit_log.id
+   and commit_log_port.port_id       = ports.id
+order by commit_log.commit_date desc,
+commit_log.id
+ limit 100";
 
 #echo "\n<pre>sql=$sql</pre>\n";
 
@@ -61,8 +56,8 @@ select commit_log.commit_date									as commit_date_raw,
 					echo "   <tr><td valign='top'>" .
 					$myrow["commit_log_id"]										. "</td><td valign='top'>".
 					"<pre><small>" . htmlspecialchars($myrow["commit_description"])	. "</small></pre></td><td valign='top'>".
-					GetPortNameFromFileName($myrow["file_name"])										. "</td><td valign='top'>".
-					$myrow["file_name"]     											. "</td>" . 
+					GetPortNameFromFileName($myrow["full_file_name"])										. "</td><td valign='top'>".
+					$myrow["full_file_name"]     											. "</td>" . 
 					"</TR>\n";
     	 			if ($i >= $numrows) break;
 	            }
