@@ -6,7 +6,7 @@
 
 # requires p5-libwww
 
-# includes {{{
+# {{{ includes 
 use Getopt::Long;
 Getopt::Long::Configure ("bundling");
 use LWP::UserAgent;
@@ -15,7 +15,7 @@ use HTTP::Request::Common;
 
 # Open a pipe to pkg_info -Ia
 # Send that result to freshports
-# globals {{{
+# {{{ globals
 $gPkgInfoCmd = "/usr/sbin/pkg_info -Ia";
 $gTempfile = "/tmp/freshports.out";
 $gVersion = "freshports 0.1 alpha - Spring 2001";
@@ -24,7 +24,7 @@ $mode = '';
 $gUrl = 'http://fp2.unixathome.org/jcampbell/pkg_upload.php';
 $gUrl = 'http://fp2.unixathome.org/jcampbell/test/pkg_upload.php';
 # }}}
-# Parse Commandline Args {{{
+# {{{ Parse Commandline Args
 #
 #
 my($debug,$version,$help) = '';
