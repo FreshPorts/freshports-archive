@@ -7,6 +7,9 @@
 use DBI;
 use strict;
 
+#use lib './';
+use portspsql;
+
 my $dbh;
 my $sth;
 my $filename;
@@ -21,24 +24,25 @@ if ($dbh) {
    while ( defined($filename = <STDIN> ) ) {
       # remove the trailing CR/LF
       $filename =~ s/\n//g;
-      print "$filename";
+#      print "$filename\n";
 
-      if (-d "$BaseDirectory$filename") {
-         $FileDirFlag = 'D';
-      } else {
-         $FileDirFlag = 'F';
+      #
+      # get the element ID for this element
+      #
+
+      my $id = GetIDFromPath($filename, $dbh);
+
+      if (!defined($id)) {
+         if (-d "$BaseDirectory$filename") {
+            $FileDirFlag = 'D';
+         } else {
+            $FileDirFlag = 'F';
+         }
+
+         $id = AddNewElement($filename, $FileDirFlag, $dbh);
+
+         print " * * * *  adding $filename = $id\n";
       }
-
-      print ",'$FileDirFlag'\n";
-
-      $sth = $dbh->prepare("select Element_Add('$filename', '$FileDirFlag')");
-      if (!$sth) {print "Cannot prepare: $DBI::errstr\n";}
-
-      $sth->execute;
-      if (!$sth) {print "Cannot execute: $DBI::errstr\n";}
-
-      $sth->finish;
-
    }
 
    $dbh->disconnect();
