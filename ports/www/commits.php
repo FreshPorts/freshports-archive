@@ -18,11 +18,11 @@
             while ($myrow = pg_fetch_array ($result, $i)) {
                $i++;
                echo "   <tr><td valign='top'>" . $myrow["message_date"] . "</td><td valign='top'>". 
-                                    $myrow["message_subject"] . "</td><td valign='top'>".
+                                    htmlspecialchars($myrow["message_subject"]) . "</td><td valign='top'>".
                                     $myrow["date_added"] . "</td><td valign='top'>".
                                     $myrow["commit_date"] . "</td><td valign='top'>".
-                                    $myrow["committer"] . "</td><td valign='top'>".
-                                    "<pre>" . $myrow["description"] . "</pre></td></tr>".
+                                    htmlspecialchars($myrow["committer"]) . "</td><td valign='top'>".
+                                    "<pre>" . htmlspecialchars($myrow["description"]) . "</pre></td></tr>".
 "\n";
                if ($i >= $numrows) break;
             }
