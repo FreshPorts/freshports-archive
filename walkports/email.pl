@@ -35,6 +35,7 @@ sub CompileWatchNotifyList($;$) {
               and watch_port.port_id            = change_log_port.port_id \
               and watch_port.watch_id           = watch.id \
               and users.id                      = watch.owner_user_id \
+              and users.watchnotifyfrequency    = '$Frequency' \
               and length(users.email)           > 0 \
               and users.emailbouncecount        = 0 \
             order by users.email";
@@ -77,6 +78,7 @@ sub SetWatchLastNoticeDate($;$) {
            die "Could not execute SQL $sql ... maybe invalid?";
 }
 
+print "start  " . `date "+%Y-%m-%d %H:%M:%S"`;
 
 if (($#ARGV+1) == 1) {
    print "there is 1 argument\n";
@@ -94,7 +96,7 @@ if (($#ARGV+1) == 1) {
 
       $dbh->disconnect();
 
-#      SendWatchNotice($Bcc);
+      SendWatchNotice($Bcc);
 
       print "message sent to users\n";
    } else {
@@ -103,3 +105,5 @@ if (($#ARGV+1) == 1) {
 } else {
   print "please specify a frequency such as D, W, F, M\n";
 }
+
+print "start " . `date "+%Y-%m-%d %H:%M:%S"`;
