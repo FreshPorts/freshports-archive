@@ -6,7 +6,7 @@
 #
 
 PORTNAME=	freshports
-PORTVERSION=	0.2a
+PORTVERSION=	0.3a
 CATEGORIES=	misc
 MASTER_SITES=	http://www.jpcampbell.org/~jpc/
 DISTNAME=	${PORTNAME}-${PORTVERSION}
