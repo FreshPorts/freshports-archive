@@ -1,4 +1,9 @@
 #!/bin/sh
+#
+# $Id: compare.sh,v 1.3 2003-04-23 15:18:09 dan Exp $
+#
+# compare the commits on two different websites
+#
 
 if [ ! -f config.sh ]
 then
