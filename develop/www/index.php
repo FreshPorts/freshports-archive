@@ -48,7 +48,7 @@ of your installed ports and registers them with FreshPorts.
 
 <P>
 If you'd like to get involved with this project, we urge you to have a look
-at the existing list of tasks in <A HREF="/mantis/">Mantis</A> (login a 
+at the existing list of tasks in <A HREF="/mantis/">Mantis</A> (login as 
 guest/guest).  If you see something you'd like to try, let us know.
 Failing that, just join the developer's mailing list and tell us what
 type of work you'd like to do.
