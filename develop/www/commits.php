@@ -1,5 +1,5 @@
 <head>
-      <title>PostgreSQL test - last 100 commits</title>
+      <title>commits - PostgreSQL test - last 100 commits</title>
       <body>
 <p>This window contains the last 100 commits.  Those rows containing N/A in subject have been imported from FreshPorts1.
 </p>
@@ -7,7 +7,7 @@
 The messages are in the mail archives.  We just have to process them.</P>
 
       <?php
-      $numrows = 300;
+      $numrows = 200;
       $database=pg_connect("dbname=FreshPorts2Test user=dan");
       if ($database) {
 
@@ -29,7 +29,8 @@ select commit_log.commit_date				as commit_date_raw,
  where commit_log.commit_date > '2001-09-29' 
    and commit_log.id                  = commit_log_elements.commit_log_id
    and commit_log_elements.element_id = element.id
- order by commit_log.commit_date desc
+ order by commit_log.commit_date desc,
+          name
  limit $numrows";
 
 #echo "<PRE>$sql</PRE>";
