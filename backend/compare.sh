@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: compare.sh,v 1.4 2003-04-23 17:51:00 dan Exp $
+# $Id: compare.sh,v 1.5 2005-08-03 12:18:34 dan Exp $
 #
 # compare the commits on two different websites
 #
@@ -31,7 +31,7 @@ then
 	# no sense telling us that they are out by just one line.
 	# that is usually just timing.
 	#
-	if [   "$FIRSTLINE" != "1d0"  -a  "$FIRSTLINE" != "0a1"  -o  "$THIRDLINE" != '100a100'  -a "$THIRDLINE" != '100d100' ]
+	if [   "$FIRSTLINE" != "1d0"  -a  "$FIRSTLINE" != "0a1"  -o  "$THIRDLINE" != '150a150'  -a "$THIRDLINE" != '150d150' ]
 	then
 		echo 'emailing'
 		cat diff.txt | mail -s "${SUBJECT}" $MAILTO
