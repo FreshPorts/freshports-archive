@@ -1,4 +1,4 @@
-<VirtualHost :80>
+<VirtualHost 206.127.23.233>
   Include  /usr/websites/api.freshports.org/configuration/virtualhost-common.conf
 </VirtualHost>
 
