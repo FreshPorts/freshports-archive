@@ -1,0 +1,13 @@
+<VirtualHost *>
+  ServerAdmin   dan@langille.org
+
+  DocumentRoot  /usr/websites/api.freshports.org
+  ServerName    api.freshports.org
+
+  <Directory   /usr/websites/api.freshports.org/www>
+    AllowOverride None
+    Order deny,allow
+    Allow from all
+  </Directory>
+
+</VirtualHost>
