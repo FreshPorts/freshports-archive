@@ -1,4 +1,4 @@
-<VirtualHost *>
+<VirtualHost :80>
   Include  /usr/websites/api.freshports.org/configuration/virtualhost-common.conf
 </VirtualHost>
 
@@ -8,7 +8,7 @@
   SSLEngine on
   SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
 
-  SSLCertificateFile    /usr/local/etc/ssl/api.freshports.org.cert
+  SSLCertificateFile    /usr/local/etc/ssl/api.freshports.org.crt
   SSLCertificateKeyFile /usr/local/etc/ssl/api.freshports.org.nopassword.key
 
   <FilesMatch "\.(cgi|shtml|phtml|php)$">
