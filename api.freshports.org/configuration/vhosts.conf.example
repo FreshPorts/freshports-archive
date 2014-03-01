@@ -1,13 +1,28 @@
 <VirtualHost *>
-  ServerAdmin   dan@langille.org
+  Include  /usr/websites/api.freshports.org/configuration/virtualhost-common.conf
+</VirtualHost>
 
-  DocumentRoot  /usr/websites/api.freshports.org
-  ServerName    api.freshports.org
+<VirtualHost :443>
+  Include         /usr/websites/api.freshports.org/configuration/virtualhost-common.conf
 
-  <Directory   /usr/websites/api.freshports.org/www>
-    AllowOverride None
-    Order deny,allow
-    Allow from all
+  SSLEngine on
+  SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+
+  SSLCertificateFile    /usr/local/etc/ssl/api.freshports.org.cert
+  SSLCertificateKeyFile /usr/local/etc/ssl/api.freshports.org.nopassword.key
+
+  <FilesMatch "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+  </FilesMatch>
+  <Directory "/usr/local/www/apache22/cgi-bin">
+    SSLOptions +StdEnvVars
   </Directory>
 
-</VirtualHost>
+  BrowserMatch ".*MSIE.*" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+  CustomLog "/usr/websites/log/freshports.org-ssl_request.log" \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
