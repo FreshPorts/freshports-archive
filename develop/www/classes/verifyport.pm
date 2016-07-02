@@ -211,8 +211,11 @@ sub GetCategory($;$) {
 	my $sql;
 	my @row;
 
-	$sql = "select GetCategory('$category'::text)";
-	print "GetCategory sql = $sql\n";
+	print 'GetCategory may not work for '$catgory' any more, because it used to be based on 'ports/...';
+	exit;
+
+	$sql = "select GetCategory('$category'::text)"; print "GetCategory
+	sql = $sql\n";
 
 	$sth = $dbh->prepare($sql);
 	$sth->execute || die "Could not execute SQL $sql ... maybe invalid?";
