@@ -16,10 +16,13 @@ fi
 
 result=0
 
-fetch -qo source1.txt $SOURCE1 2>&1 > /dev/null
-fetch -qo source2.txt $SOURCE2 2>&1 > /dev/null
+src1=$(mktemp /tmp/url-compare.XXXXXX)
+src2=$(mktemp /tmp/url-compare.XXXXXX)
 
-diff -ruN source1.txt source2.txt > diff.txt
+fetch -qo $src1 $SOURCE1 2>&1 > /dev/null
+fetch -qo $src2 $SOURCE2 2>&1 > /dev/null
+
+diff -ruN $src1 $src2 > diff.txt
 
 NUMLINES=`cat diff.txt | wc -l`
 #echo $NUMLINES
@@ -43,5 +46,7 @@ then
 else
 	echo "Same commits found"
 fi
+
+rm $src1 $src2
 
 exit $result
