@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<title>FreshPorts 2 - things to do</title>
+<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+
+<body bgcolor="#ffffff" link="#0000cc">
+
+<h2>Last updated - 22 February 2001</h2>
+
+<p>FreshPorts2 - list of things to do.  These items are rather small and modular. 
+Pretty much self-contained.  If you're keen to try some of this stuff,
+join the develop mailing list and put your hand up.  Details at
+<a href="/">http://fp2.unixathome.org/</a>.
+
+<p>Once a task has been started by someone, their <b>[Name]</b> appears after the task.
+
+<ul>
+<li>allow http://freshports.org/www/apache13 to get to the right page
+    (mostly php, some html) <b>[Harold]</b></li>
+
+<li>take the output of pkg_info and add that to the person's watch list.
+    Ideally, this would work from the command line with the person merely 
+    posting the file or something.  I don't want to do this with copy/paste.
+    Something which would work entirely from the browser is ideal.
+    (probably a shell script, perhaps some HTML or php or perl) <b>[John]</b></li>
+
+<li>send notices to each person when something on their watch list changes
+    (perl script with some database code?)</li>
+
+<li>write a simple little script which compares the contents of the website
+    with what came in on the mail.  This is a check to verify that all 
+    messages have been received and processed.  This script would be run
+    at multiple locations around the world, just to make sure we don't miss
+    anything.  It would also entail writing a special URL for the script
+    to use which would allow the script to access messages as it needs to.</li>
+
+<li>When an email notification bounces back to us, we need some way of 
+    [at least partially] automating the removal of someone from the 
+    notification list.  In effect we do this:
+
+<pre>
+      set emailbouncecount = emailbouncecount+1 where email = '&lt;bounced addresss&gt;';
+</pre>
+     My guess is that we collect the bounces, parse them for the original 
+     address, then plop them into a web page where we can verify what's been
+     done and set that person's bounce count accordingly.  An admin would then come along
+     verify what's there, and click YES, do it.
+</li>
+
+<li>Fix the orphaned elements which don't live under the /ports tree when they should.
+    Here's a short example:
+
+<font face="Courier">
+<pre>
+FreshPorts2=# select * from element where parent_id is null;
+  id   |         name          | parent_id | directory_file_flag | status 
+-------+-----------------------+-----------+---------------------+--------
+ 73628 | www                   |           | D                   | A
+ 41314 | src                   |           | D                   | A
+     1 | doc                   |           | D                   | A
+  2137 | ports                 |           | D                   | A
+ 76073 | CVSROOT               |           | D                   | A
+ 76075 | russian               |           | D                   | A
+ 76084 | archivers             |           | D                   | A
+ 76097 | devel                 |           | D                   | A
+ 76111 | sys                   |           | D                   | A
+ 76122 | textproc              |           | D                   | A
+ 76142 | net                   |           | D                   | A
+ 76233 | games                 |           | D                   | A
+</pre></font>
+
+This problem is caused by messages not being properly parsed. They don't include the full ports directory.
+e.g. ports/devel.  Instead they have just devel.
+</li>
+
+<li>make a link to list broken and forbidden ports.</li>
+   
+</ul>
+</body>
+</html>
+

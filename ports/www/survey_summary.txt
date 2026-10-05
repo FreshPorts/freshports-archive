@@ -1,0 +1,53 @@
+Ok, here's a summary of all the points brought up so far in the survey. 
+I have omitted "doing a great job" comments, or it would have been at
+the top of the list.  I think we already know it's pretty cool.  I have
+omitted requests for features that already exist, and requests to make
+one thing or another easier to find (with one exception).  I think we
+know that organization is a big issue.  Oh, also, I left out comments on
+the survey itself.  Anyway, here's the list of requests ordered by
+frequency:  
+
+#   Requests
+======================================================================
+8   Personalized email notification for watched ports
+4   Put a quick search box on the main page
+4   Customize the features/number of items on the front page
+4   Add Open, Net, Darwin, OpenPackages support
+4   faster! faster! faster!
+3   Show port update reason (security issue, upgrade, patch, conflict)
+3   pkg-comments on the main page
+3   Graphic design work, choose a different color than magenta
+3   Speed of the search engine
+3   Summarize a day's changes by category rather than by time
+3   Deal with huge commits (when some change effects hundreds of ports)
+    in a better way
+3   More powerful search options
+2   General help with using Ports
+2   Watch whole categories of ports
+2   Include virtual categories
+2   Application to add ports to watchlist from a machine's installed
+    ports
+2   Better Port descriptions (user contributed?)
+2   Show updates since a user's last visit to FreshPorts
+2   Add simple methods to add (and delete) watched ports form main
+    page/port page
+1   Offer "sort by last update" as a personal default.
+1   Show what changed between versions
+1   Show the popularity of a given port
+1   Give ports a review or ranking system
+1   Spotlight interesting ports
+1   Search an alternate database (freshmeat) when search doesn't find
+    anything
+1   View by platform
+1   Feature the name of the commiter more prominently
+1   Add an 'audited' 'not audited' tag to each port regards security
+1   Add mirrors of the site
+1   Check against installed version numbers ala pkg_version -v
+1   Improve the site stats
+1   Add Amazon-style "people who watch this port also watch..."
+1   Attach user comments to port pages
+1   Links to cvsweb diffs for port changes
+1   Omit duplicates in the daily changes list boxes
+
+
+This list is current up to survey ID 174
