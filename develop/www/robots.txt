@@ -1,0 +1,5 @@
+# robots.txt for http://develop.freshports.org/
+
+# all others, please don't...
+User-agent: *
+Disallow: /

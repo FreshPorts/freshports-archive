@@ -1,0 +1,800 @@
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:24:23 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id 8A0A616A4C1; Tue, 26 Aug 2003 13:24:23 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id B985743FBD; Tue, 26 Aug 2003 13:24:22 -0700 (PDT)
+	(envelope-from krion@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKOM0U008649;
+	Tue, 26 Aug 2003 13:24:22 -0700 (PDT)
+	(envelope-from krion@repoman.freebsd.org)
+Received: (from krion@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKOMM2008648;
+	Tue, 26 Aug 2003 13:24:22 -0700 (PDT)
+Message-Id: <200308262024.h7QKOMM2008648@repoman.freebsd.org>
+From: Kirill Ponomarew <krion@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:24:22 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/editors/manedit Makefile distinfo
+ ports/editors/manedit/files mntent.h mntent_compat.cpatch-Makefile.srclist
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:24:23 -0000
+
+krion       2003/08/26 13:24:22 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    editors/manedit      Makefile distinfo 
+    editors/manedit/files patch-Makefile.FreeBSD 
+                          patch-Makefile.install.UNIX 
+  Added files:
+    editors/manedit/files mntent.h mntent_compat.c 
+                          patch-Makefile.srclist 
+  Log:
+  - Update to version 0.5.10
+  
+  PR:             56001
+  Submitted by:   Ports Fury
+  
+  Revision  Changes    Path
+  1.14      +3 -4      ports/editors/manedit/Makefile
+  1.10      +1 -1      ports/editors/manedit/distinfo
+  1.1       +35 -0     ports/editors/manedit/files/mntent.h (new)
+  1.1       +88 -0     ports/editors/manedit/files/mntent_compat.c (new)
+  1.4       +2 -2      ports/editors/manedit/files/patch-Makefile.FreeBSD
+  1.3       +45 -33    ports/editors/manedit/files/patch-Makefile.install.UNIX
+  1.1       +17 -0     ports/editors/manedit/files/patch-Makefile.srclist (new)
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:26:00 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id A5D4916A4BF; Tue, 26 Aug 2003 13:26:00 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id 216AC43FF2; Tue, 26 Aug 2003 13:25:59 -0700 (PDT)
+	(envelope-from marcus@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKPx0U011894;
+	Tue, 26 Aug 2003 13:25:59 -0700 (PDT)
+	(envelope-from marcus@repoman.freebsd.org)
+Received: (from marcus@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKPwu3011893;
+	Tue, 26 Aug 2003 13:25:58 -0700 (PDT)
+Message-Id: <200308262025.h7QKPwu3011893@repoman.freebsd.org>
+From: Joe Marcus Clarke <marcus@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:25:58 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/archivers/dpkg Makefile ports/archivers/gtar
+ Makefile ports/archivers/libcomprex Makefile ports/archivers/rpm
+ Makefile ports/astro/fooseti Makefile ports/astro/gpsdrive
+ Makefile ports/astro/spacechart Makefile ports/audio/aumix ...
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:26:00 -0000
+
+marcus      2003/08/26 13:25:58 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    archivers/dpkg       Makefile 
+    archivers/gtar       Makefile 
+    archivers/libcomprex Makefile 
+    archivers/rpm        Makefile 
+    astro/fooseti        Makefile 
+    astro/gpsdrive       Makefile 
+    astro/spacechart     Makefile 
+    audio/aumix          Makefile 
+    audio/denemo         Makefile 
+    audio/lopster        Makefile 
+    audio/mad            Makefile 
+    audio/normalize      Makefile 
+    audio/opmixer        Makefile 
+    audio/snd            Makefile 
+    audio/soribada       Makefile 
+    audio/swhplugins     Makefile 
+    audio/umix           Makefile 
+    audio/vorbis-tools   Makefile 
+    chinese/xcin25       Makefile 
+    chinese/zhcon        Makefile 
+    comms/gnokii         Makefile 
+    comms/gsmlib         Makefile 
+    converters/recode    Makefile 
+    databases/clip       Makefile 
+    databases/mysql-gui  Makefile 
+    databases/namazu2    Makefile 
+    databases/p5-DBD-Sybase Makefile 
+    databases/p5-Search-Namazu Makefile 
+    databases/postgresql-devel Makefile 
+    databases/postgresql7 Makefile 
+    databases/postgresql72 Makefile 
+    databases/pxtools    Makefile 
+    databases/sqsh       Makefile 
+    deskutils/babytrans  Makefile 
+    deskutils/gcal       Makefile 
+    devel/ORBit          Makefile 
+    devel/bison          Makefile 
+    devel/bison1875      Makefile 
+    devel/cook           Makefile 
+    devel/gindent        Makefile 
+    devel/glib20         Makefile 
+    devel/gmake          Makefile 
+    devel/ixlib          Makefile 
+    devel/libelf         Makefile 
+    devel/libzvbi        Makefile 
+    devel/mingw-binutils Makefile 
+    devel/mingw32-binutils Makefile 
+    devel/motor          Makefile 
+    devel/p5-Locale-gettext Makefile 
+    devel/popt           Makefile 
+    devel/ruby-intl      Makefile 
+    devel/yasm           Makefile 
+    editors/cooledit     Makefile 
+    editors/lpe          Makefile 
+    editors/nano         Makefile 
+    editors/poedit       Makefile 
+    editors/ssed         Makefile 
+    editors/xemacs-devel-mule Makefile 
+    editors/xemacs21-mule Makefile 
+    editors/xmleditor    Makefile 
+    emulators/hercules   Makefile 
+    emulators/xsystem35  Makefile 
+    ftp/axel             Makefile 
+    ftp/lftp             Makefile 
+    ftp/pavuk            Makefile 
+    ftp/wget+ipv6        Makefile 
+    ftp/wget             Makefile 
+    games/eboard         Makefile 
+    games/gtypist        Makefile 
+    games/lexter         Makefile 
+    games/macopix        Makefile 
+    games/xinvaders      Makefile 
+    graphics/gtkgraph    Makefile 
+    graphics/libexif     Makefile 
+    graphics/libgphoto2  Makefile 
+    graphics/osgedit     Makefile 
+    graphics/ruby-tgif   Makefile 
+    graphics/sane-backends Makefile 
+    graphics/tgif-nls    Makefile 
+    irc/lostirc          Makefile 
+    japanese/eb          Makefile 
+    japanese/mutt-devel  Makefile 
+    japanese/mutt        Makefile 
+    japanese/samba       Makefile 
+    japanese/vflib       Makefile 
+    korean/texinfo       Makefile 
+    lang/clisp           Makefile 
+    lang/librep          Makefile 
+    lang/mdk             Makefile 
+    lang/open-cobol      Makefile 
+    lang/php5            Makefile 
+    mail/elm             Makefile 
+    mail/fetchmail       Makefile 
+    mail/kbiff           Makefile 
+    mail/mutt-devel      Makefile 
+    mail/mutt            Makefile 
+    mail/perdition       Makefile 
+    mail/spruce          Makefile 
+    mail/sylpheed-claws  Makefile 
+    math/graphthing      Makefile 
+    math/oleo            Makefile 
+    misc/dirtree         Makefile 
+    misc/gnomemimedata   Makefile 
+    misc/hello           Makefile 
+    misc/kcd             Makefile 
+    misc/mc              Makefile 
+    misc/pinfo           Makefile 
+    misc/sh-utils        Makefile 
+    misc/upclient        Makefile 
+    multimedia/libxine   Makefile 
+    multimedia/ogle-gui  Makefile 
+    multimedia/vlc       Makefile 
+    multimedia/xine      Makefile 
+    multimedia/xmps-opendivx-plugin Makefile 
+    multimedia/xmps-win32-plugin Makefile 
+    net/ap-utils         Makefile 
+    net/centericq        Makefile 
+    net/darkstat         Makefile 
+    net/dctc-gui         Makefile 
+    net/etherape         Makefile 
+    net/gtkhx            Makefile 
+    net/ipv6calc         Makefile 
+    net/jwhois           Makefile 
+    net/lmule            Makefile 
+    net/mydns            Makefile 
+    net/nc6              Makefile 
+    net/netdude          Makefile 
+    net/tcpreen          Makefile 
+    net/wol              Makefile 
+    net/xmule            Makefile 
+    news/slrn            Makefile 
+    news/tin             Makefile 
+    news/yencode         Makefile 
+    palm/coldsync        Makefile 
+    palm/jpilot          Makefile 
+    print/cjk-lyx        Makefile 
+    print/gimp-print     Makefile 
+    print/lyx            Makefile 
+    print/rlpr           Makefile 
+    security/authforce   Makefile 
+    security/fwlogwatch  Makefile 
+    security/gnupg       Makefile 
+    security/mcrypt      Makefile 
+    security/newpg       Makefile 
+    security/quintuple-agent Makefile 
+    security/steghide    Makefile 
+    sysutils/apcupsd     Makefile 
+    sysutils/fileutils   Makefile 
+    sysutils/gcombust    Makefile 
+    sysutils/linneighborhood Makefile 
+    textproc/gxmlviewer  Makefile 
+    textproc/libtre      Makefile 
+    textproc/modlogan    Makefile 
+    textproc/rotix       Makefile 
+    textproc/scrollkeeper Makefile 
+    textproc/spellutils  Makefile 
+    textproc/textutils   Makefile 
+    www/amyc             Makefile 
+    www/horde2           Makefile 
+    www/lynx-current     Makefile 
+    www/retawq           Makefile 
+    www/sitecopy         Makefile 
+    x11-fm/xnc           Makefile 
+    x11-toolkits/gtk12   Makefile 
+    x11-toolkits/pango   Makefile 
+    x11-wm/enlightenment Makefile 
+    x11-wm/icewm         Makefile 
+    x11-wm/kappdock      Makefile 
+    x11-wm/ude           Makefile 
+    x11-wm/windowmaker   Makefile 
+    x11/kdelibs3         Makefile 
+    x11/kgamma           Makefile 
+    x11/xfree86_xkb_xml  Makefile 
+  Log:
+  Bump the PORTREVISION for the ports directly affected by the gettext upgrade.
+  
+  Prodded by:     kris
+  
+  Revision  Changes    Path
+  1.3       +1 -0      ports/archivers/dpkg/Makefile
+  1.37      +1 -1      ports/archivers/gtar/Makefile
+  1.11      +1 -1      ports/archivers/libcomprex/Makefile
+  1.46      +1 -1      ports/archivers/rpm/Makefile
+  1.16      +1 -1      ports/astro/fooseti/Makefile
+  1.14      +1 -0      ports/astro/gpsdrive/Makefile
+  1.12      +1 -1      ports/astro/spacechart/Makefile
+  1.38      +1 -0      ports/audio/aumix/Makefile
+  1.15      +1 -1      ports/audio/denemo/Makefile
+  1.20      +1 -1      ports/audio/lopster/Makefile
+  1.17      +1 -1      ports/audio/mad/Makefile
+  1.10      +1 -1      ports/audio/normalize/Makefile
+  1.20      +1 -1      ports/audio/opmixer/Makefile
+  1.32      +1 -1      ports/audio/snd/Makefile
+  1.10      +1 -1      ports/audio/soribada/Makefile
+  1.10      +1 -0      ports/audio/swhplugins/Makefile
+  1.8       +1 -1      ports/audio/umix/Makefile
+  1.27      +1 -1      ports/audio/vorbis-tools/Makefile
+  1.49      +1 -1      ports/chinese/xcin25/Makefile
+  1.20      +1 -0      ports/chinese/zhcon/Makefile
+  1.22      +1 -0      ports/comms/gnokii/Makefile
+  1.10      +1 -0      ports/comms/gsmlib/Makefile
+  1.27      +1 -1      ports/converters/recode/Makefile
+  1.11      +1 -0      ports/databases/clip/Makefile
+  1.12      +1 -1      ports/databases/mysql-gui/Makefile
+  1.35      +1 -0      ports/databases/namazu2/Makefile
+  1.10      +1 -0      ports/databases/p5-DBD-Sybase/Makefile
+  1.9       +1 -1      ports/databases/p5-Search-Namazu/Makefile
+  1.125     +1 -0      ports/databases/postgresql-devel/Makefile
+  1.114     +1 -0      ports/databases/postgresql7/Makefile
+  1.7       +1 -1      ports/databases/postgresql72/Makefile
+  1.13      +1 -1      ports/databases/pxtools/Makefile
+  1.19      +1 -1      ports/databases/sqsh/Makefile
+  1.5       +1 -0      ports/deskutils/babytrans/Makefile
+  1.10      +1 -1      ports/deskutils/gcal/Makefile
+  1.74      +1 -0      ports/devel/ORBit/Makefile
+  1.42      +1 -0      ports/devel/bison/Makefile
+  1.42      +1 -0      ports/devel/bison1875/Makefile
+  1.24      +1 -0      ports/devel/cook/Makefile
+  1.27      +1 -1      ports/devel/gindent/Makefile
+  1.86      +1 -0      ports/devel/glib20/Makefile
+  1.56      +1 -0      ports/devel/gmake/Makefile
+  1.13      +1 -1      ports/devel/ixlib/Makefile
+  1.7       +1 -0      ports/devel/libelf/Makefile
+  1.6       +1 -0      ports/devel/libzvbi/Makefile
+  1.9       +1 -0      ports/devel/mingw-binutils/Makefile
+  1.13      +1 -0      ports/devel/mingw32-binutils/Makefile
+  1.15      +1 -0      ports/devel/motor/Makefile
+  1.12      +1 -1      ports/devel/p5-Locale-gettext/Makefile
+  1.18      +1 -0      ports/devel/popt/Makefile
+  1.14      +1 -1      ports/devel/ruby-intl/Makefile
+  1.3       +1 -0      ports/devel/yasm/Makefile
+  1.41      +1 -0      ports/editors/cooledit/Makefile
+  1.25      +1 -1      ports/editors/lpe/Makefile
+  1.21      +1 -0      ports/editors/nano/Makefile
+  1.20      +1 -1      ports/editors/poedit/Makefile
+  1.6       +1 -0      ports/editors/ssed/Makefile
+  1.17      +1 -0      ports/editors/xemacs-devel-mule/Makefile
+  1.49      +1 -0      ports/editors/xemacs21-mule/Makefile
+  1.5       +1 -0      ports/editors/xmleditor/Makefile
+  1.13      +1 -0      ports/emulators/hercules/Makefile
+  1.39      +1 -1      ports/emulators/xsystem35/Makefile
+  1.17      +1 -1      ports/ftp/axel/Makefile
+  1.75      +1 -0      ports/ftp/lftp/Makefile
+  1.34      +1 -1      ports/ftp/pavuk/Makefile
+  1.15      +1 -1      ports/ftp/wget+ipv6/Makefile
+  1.66      +1 -1      ports/ftp/wget/Makefile
+  1.23      +1 -0      ports/games/eboard/Makefile
+  1.13      +1 -0      ports/games/gtypist/Makefile
+  1.11      +1 -1      ports/games/lexter/Makefile
+  1.3       +1 -0      ports/games/macopix/Makefile
+  1.27      +1 -1      ports/games/xinvaders/Makefile
+  1.21      +1 -1      ports/graphics/gtkgraph/Makefile
+  1.12      +1 -0      ports/graphics/libexif/Makefile
+  1.8       +1 -0      ports/graphics/libgphoto2/Makefile
+  1.6       +1 -1      ports/graphics/osgedit/Makefile
+  1.12      +1 -1      ports/graphics/ruby-tgif/Makefile
+  1.51      +1 -1      ports/graphics/sane-backends/Makefile
+  1.24      +1 -0      ports/graphics/tgif-nls/Makefile
+  1.12      +1 -0      ports/irc/lostirc/Makefile
+  1.37      +1 -1      ports/japanese/eb/Makefile
+  1.44      +1 -0      ports/japanese/mutt-devel/Makefile
+  1.25      +1 -0      ports/japanese/mutt/Makefile
+  1.34      +1 -0      ports/japanese/samba/Makefile
+  1.44      +1 -1      ports/japanese/vflib/Makefile
+  1.8       +1 -1      ports/korean/texinfo/Makefile
+  1.16      +1 -0      ports/lang/clisp/Makefile
+  1.49      +1 -1      ports/lang/librep/Makefile
+  1.16      +1 -0      ports/lang/mdk/Makefile
+  1.11      +1 -0      ports/lang/open-cobol/Makefile
+  1.24      +1 -1      ports/lang/php5/Makefile
+  1.72      +1 -0      ports/mail/elm/Makefile
+  1.145     +1 -0      ports/mail/fetchmail/Makefile
+  1.32      +1 -1      ports/mail/kbiff/Makefile
+  1.204     +1 -1      ports/mail/mutt-devel/Makefile
+  1.139     +1 -1      ports/mail/mutt/Makefile
+  1.17      +1 -1      ports/mail/perdition/Makefile
+  1.25      +1 -1      ports/mail/spruce/Makefile
+  1.34      +1 -0      ports/mail/sylpheed-claws/Makefile
+  1.14      +1 -0      ports/math/graphthing/Makefile
+  1.40      +1 -1      ports/math/oleo/Makefile
+  1.12      +1 -1      ports/misc/dirtree/Makefile
+  1.26      +1 -0      ports/misc/gnomemimedata/Makefile
+  1.8       +1 -0      ports/misc/hello/Makefile
+  1.21      +1 -0      ports/misc/kcd/Makefile
+  1.86      +1 -1      ports/misc/mc/Makefile
+  1.27      +1 -0      ports/misc/pinfo/Makefile
+  1.18      +1 -1      ports/misc/sh-utils/Makefile
+  1.25      +1 -0      ports/misc/upclient/Makefile
+  1.44      +1 -1      ports/multimedia/libxine/Makefile
+  1.24      +1 -1      ports/multimedia/ogle-gui/Makefile
+  1.25      +1 -0      ports/multimedia/vlc/Makefile
+  1.45      +1 -0      ports/multimedia/xine/Makefile
+  1.12      +1 -1      ports/multimedia/xmps-opendivx-plugin/Makefile
+  1.16      +1 -1      ports/multimedia/xmps-win32-plugin/Makefile
+  1.9       +1 -0      ports/net/ap-utils/Makefile
+  1.65      +1 -1      ports/net/centericq/Makefile
+  1.13      +1 -0      ports/net/darkstat/Makefile
+  1.40      +1 -0      ports/net/dctc-gui/Makefile
+  1.15      +1 -0      ports/net/etherape/Makefile
+  1.15      +1 -1      ports/net/gtkhx/Makefile
+  1.14      +1 -0      ports/net/ipv6calc/Makefile
+  1.18      +1 -1      ports/net/jwhois/Makefile
+  1.12      +1 -0      ports/net/lmule/Makefile
+  1.17      +1 -0      ports/net/mydns/Makefile
+  1.6       +1 -0      ports/net/nc6/Makefile
+  1.12      +1 -1      ports/net/netdude/Makefile
+  1.10      +1 -0      ports/net/tcpreen/Makefile
+  1.16      +1 -1      ports/net/wol/Makefile
+  1.13      +1 -0      ports/net/xmule/Makefile
+  1.35      +1 -0      ports/news/slrn/Makefile
+  1.116     +1 -0      ports/news/tin/Makefile
+  1.9       +1 -1      ports/news/yencode/Makefile
+  1.25      +1 -0      ports/palm/coldsync/Makefile
+  1.34      +1 -0      ports/palm/jpilot/Makefile
+  1.18      +1 -0      ports/print/cjk-lyx/Makefile
+  1.15      +1 -0      ports/print/gimp-print/Makefile
+  1.77      +1 -0      ports/print/lyx/Makefile
+  1.14      +1 -1      ports/print/rlpr/Makefile
+  1.6       +1 -1      ports/security/authforce/Makefile
+  1.16      +1 -0      ports/security/fwlogwatch/Makefile
+  1.59      +1 -0      ports/security/gnupg/Makefile
+  1.20      +1 -0      ports/security/mcrypt/Makefile
+  1.9       +1 -1      ports/security/newpg/Makefile
+  1.5       +1 -0      ports/security/quintuple-agent/Makefile
+  1.14      +1 -0      ports/security/steghide/Makefile
+  1.16      +1 -0      ports/sysutils/apcupsd/Makefile
+  1.15      +1 -1      ports/sysutils/fileutils/Makefile
+  1.37      +1 -0      ports/sysutils/gcombust/Makefile
+  1.4       +1 -1      ports/sysutils/linneighborhood/Makefile
+  1.11      +1 -0      ports/textproc/gxmlviewer/Makefile
+  1.11      +1 -0      ports/textproc/libtre/Makefile
+  1.25      +1 -1      ports/textproc/modlogan/Makefile
+  1.11      +1 -1      ports/textproc/rotix/Makefile
+  1.34      +1 -1      ports/textproc/scrollkeeper/Makefile
+  1.4       +1 -0      ports/textproc/spellutils/Makefile
+  1.18      +1 -1      ports/textproc/textutils/Makefile
+  1.13      +1 -1      ports/www/amyc/Makefile
+  1.32      +1 -1      ports/www/horde2/Makefile
+  1.148     +1 -1      ports/www/lynx-current/Makefile
+  1.16      +1 -0      ports/www/retawq/Makefile
+  1.35      +1 -0      ports/www/sitecopy/Makefile
+  1.27      +1 -0      ports/x11-fm/xnc/Makefile
+  1.94      +1 -1      ports/x11-toolkits/gtk12/Makefile
+  1.52      +1 -0      ports/x11-toolkits/pango/Makefile
+  1.77      +1 -1      ports/x11-wm/enlightenment/Makefile
+  1.89      +1 -0      ports/x11-wm/icewm/Makefile
+  1.9       +1 -1      ports/x11-wm/kappdock/Makefile
+  1.18      +1 -0      ports/x11-wm/ude/Makefile
+  1.108     +1 -0      ports/x11-wm/windowmaker/Makefile
+  1.131     +1 -0      ports/x11/kdelibs3/Makefile
+  1.10      +1 -0      ports/x11/kgamma/Makefile
+  1.8       +1 -0      ports/x11/xfree86_xkb_xml/Makefile
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:26:23 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id A50B916A4BF; Tue, 26 Aug 2003 13:26:23 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id E12B743FE3; Tue, 26 Aug 2003 13:26:22 -0700 (PDT)
+	(envelope-from krion@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKQM0U011959;
+	Tue, 26 Aug 2003 13:26:22 -0700 (PDT)
+	(envelope-from krion@repoman.freebsd.org)
+Received: (from krion@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKQMFw011958;
+	Tue, 26 Aug 2003 13:26:22 -0700 (PDT)
+Message-Id: <200308262026.h7QKQMFw011958@repoman.freebsd.org>
+From: Kirill Ponomarew <krion@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:26:22 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/editors/gate Makefile distinfo pkg-descr
+ ports/editors/gate/files patch-aa patch-ab patch-ac patch-ad
+ patch-ae patch-af
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:26:23 -0000
+
+krion       2003/08/26 13:26:22 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    editors/gate         Makefile distinfo pkg-descr 
+  Removed files:
+    editors/gate/files   patch-aa patch-ab patch-ac patch-ad 
+                         patch-ae patch-af 
+  Log:
+  - Update to version 2.05
+  
+  PR:             56000
+  Submitted by:   Ports Fury
+  
+  Revision  Changes    Path
+  1.4       +16 -9     ports/editors/gate/Makefile
+  1.2       +1 -1      ports/editors/gate/distinfo
+  1.2       +0 -24     ports/editors/gate/files/patch-aa (dead)
+  1.2       +0 -31     ports/editors/gate/files/patch-ab (dead)
+  1.2       +0 -11     ports/editors/gate/files/patch-ac (dead)
+  1.2       +0 -19     ports/editors/gate/files/patch-ad (dead)
+  1.2       +0 -20     ports/editors/gate/files/patch-ae (dead)
+  1.2       +0 -16     ports/editors/gate/files/patch-af (dead)
+  1.2       +1 -1      ports/editors/gate/pkg-descr
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:33:50 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id 176A716A4BF; Tue, 26 Aug 2003 13:33:50 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id A8A8743FBD; Tue, 26 Aug 2003 13:33:49 -0700 (PDT)
+	(envelope-from marcus@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKXn0U012245;
+	Tue, 26 Aug 2003 13:33:49 -0700 (PDT)
+	(envelope-from marcus@repoman.freebsd.org)
+Received: (from marcus@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKXnss012244;
+	Tue, 26 Aug 2003 13:33:49 -0700 (PDT)
+Message-Id: <200308262033.h7QKXnss012244@repoman.freebsd.org>
+From: Joe Marcus Clarke <marcus@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:33:49 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/editors/AbiWord2 Makefile distinfo
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:33:50 -0000
+
+marcus      2003/08/26 13:33:49 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    editors/AbiWord2     Makefile distinfo 
+  Log:
+  The AbiWord distfile was re-rolled.  The only change was that all the
+  individual subdirectories are now once again included in an
+  abiword-${PORTVERSION} directory.  This is consistent with the previous
+  AbiWord releases.
+  
+  Revision  Changes    Path
+  1.69      +1 -1      ports/editors/AbiWord2/Makefile
+  1.31      +1 -1      ports/editors/AbiWord2/distinfo
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:40:38 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id A69C116A4BF; Tue, 26 Aug 2003 13:40:38 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id 4E57643FA3; Tue, 26 Aug 2003 13:40:38 -0700 (PDT)
+	(envelope-from krion@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKec0U012577;
+	Tue, 26 Aug 2003 13:40:38 -0700 (PDT)
+	(envelope-from krion@repoman.freebsd.org)
+Received: (from krion@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKec5s012576;
+	Tue, 26 Aug 2003 13:40:38 -0700 (PDT)
+Message-Id: <200308262040.h7QKec5s012576@repoman.freebsd.org>
+From: Kirill Ponomarew <krion@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:40:37 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/games/xscrabble Makefile distinfo pkg-descr
+ pkg-plist ports/games/xscrabble/files patch-aa patch-ab patch-ac
+ patch-ad
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:40:38 -0000
+
+krion       2003/08/26 13:40:37 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    games/xscrabble      Makefile distinfo pkg-descr pkg-plist 
+  Removed files:
+    games/xscrabble/files patch-aa patch-ab patch-ac patch-ad 
+  Log:
+  - Update to version 2.10
+  
+  PR:             56005
+  Submitted by:   Ports Fury
+  
+  Revision  Changes    Path
+  1.19      +29 -9     ports/games/xscrabble/Makefile
+  1.6       +2 -1      ports/games/xscrabble/distinfo
+  1.3       +0 -20     ports/games/xscrabble/files/patch-aa (dead)
+  1.3       +0 -15     ports/games/xscrabble/files/patch-ab (dead)
+  1.2       +0 -13     ports/games/xscrabble/files/patch-ac (dead)
+  1.2       +0 -21     ports/games/xscrabble/files/patch-ad (dead)
+  1.3       +0 -2      ports/games/xscrabble/pkg-descr
+  1.2       +3 -2      ports/games/xscrabble/pkg-plist
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 13:55:44 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id F3FC716A4F1; Tue, 26 Aug 2003 13:55:43 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id 8AC8C43FE1; Tue, 26 Aug 2003 13:55:43 -0700 (PDT)
+	(envelope-from marcus@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QKth0U013417;
+	Tue, 26 Aug 2003 13:55:43 -0700 (PDT)
+	(envelope-from marcus@repoman.freebsd.org)
+Received: (from marcus@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QKtg57013416;
+	Tue, 26 Aug 2003 13:55:42 -0700 (PDT)
+Message-Id: <200308262055.h7QKtg57013416@repoman.freebsd.org>
+From: Joe Marcus Clarke <marcus@FreeBSD.org>
+Date: Tue, 26 Aug 2003 13:55:42 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/misc/gnome-icon-theme Makefile distinfo
+ pkg-plist ports/misc/gnome-icon-theme/files patch-configure
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 20:55:44 -0000
+
+marcus      2003/08/26 13:55:42 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    misc/gnome-icon-theme Makefile distinfo pkg-plist 
+  Removed files:
+    misc/gnome-icon-theme/files patch-configure 
+  Log:
+  Update to 1.0.7.
+  
+  Revision  Changes    Path
+  1.13      +1 -1      ports/misc/gnome-icon-theme/Makefile
+  1.9       +1 -1      ports/misc/gnome-icon-theme/distinfo
+  1.3       +0 -11     ports/misc/gnome-icon-theme/files/patch-configure (dead)
+  1.11      +5 -1      ports/misc/gnome-icon-theme/pkg-plist
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 14:01:01 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id 1AE6916A4BF; Tue, 26 Aug 2003 14:01:01 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id A8B0A43FAF; Tue, 26 Aug 2003 14:01:00 -0700 (PDT)
+	(envelope-from marcus@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QL100U013708;
+	Tue, 26 Aug 2003 14:01:00 -0700 (PDT)
+	(envelope-from marcus@repoman.freebsd.org)
+Received: (from marcus@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QL10XU013707;
+	Tue, 26 Aug 2003 14:01:00 -0700 (PDT)
+Message-Id: <200308262101.h7QL10XU013707@repoman.freebsd.org>
+From: Joe Marcus Clarke <marcus@FreeBSD.org>
+Date: Tue, 26 Aug 2003 14:01:00 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/x11-toolkits/gtksourceview Makefile distinfo
+ pkg-plist
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 21:01:01 -0000
+
+marcus      2003/08/26 14:01:00 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    x11-toolkits/gtksourceview Makefile distinfo pkg-plist 
+  Log:
+  Update to 0.6.0.
+  
+  Revision  Changes    Path
+  1.8       +2 -2      ports/x11-toolkits/gtksourceview/Makefile
+  1.6       +1 -1      ports/x11-toolkits/gtksourceview/distinfo
+  1.6       +8 -0      ports/x11-toolkits/gtksourceview/pkg-plist
+
+From owner-cvs-all@FreeBSD.ORG  Tue Aug 26 14:14:16 2003
+Return-Path: <owner-cvs-all@FreeBSD.ORG>
+Delivered-To: cvs-all@freebsd.org
+Received: from mx1.FreeBSD.org (mx1.freebsd.org [216.136.204.125])
+	by hub.freebsd.org (Postfix) with ESMTP
+	id E806116A4BF; Tue, 26 Aug 2003 14:14:16 -0700 (PDT)
+Received: from repoman.freebsd.org (repoman.freebsd.org [216.136.204.115])
+	by mx1.FreeBSD.org (Postfix) with ESMTP
+	id 843DF43FA3; Tue, 26 Aug 2003 14:14:16 -0700 (PDT)
+	(envelope-from marcus@FreeBSD.org)
+Received: from repoman.freebsd.org (localhost [127.0.0.1])
+	by repoman.freebsd.org (8.12.6/8.12.6) with ESMTP id h7QLEG0U015064;
+	Tue, 26 Aug 2003 14:14:16 -0700 (PDT)
+	(envelope-from marcus@repoman.freebsd.org)
+Received: (from marcus@localhost)
+	by repoman.freebsd.org (8.12.6/8.12.6/Submit) id h7QLEGRj015063;
+	Tue, 26 Aug 2003 14:14:16 -0700 (PDT)
+Message-Id: <200308262114.h7QLEGRj015063@repoman.freebsd.org>
+From: Joe Marcus Clarke <marcus@FreeBSD.org>
+Date: Tue, 26 Aug 2003 14:14:16 -0700 (PDT)
+To: ports-committers@FreeBSD.org, cvs-ports@FreeBSD.org,
+	cvs-all@FreeBSD.org
+X-FreeBSD-CVS-Branch: HEAD
+Subject: cvs commit: ports/www/epiphany Makefile distinfo pkg-plist
+X-BeenThere: cvs-all@freebsd.org
+X-Mailman-Version: 2.1.1
+Precedence: list
+List-Id: CVS commit messages for the entire tree <cvs-all.freebsd.org>
+List-Unsubscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=unsubscribe>
+List-Archive: <http://lists.freebsd.org/pipermail/cvs-all>
+List-Post: <mailto:cvs-all@freebsd.org>
+List-Help: <mailto:cvs-all-request@freebsd.org?subject=help>
+List-Subscribe: <http://lists.freebsd.org/mailman/listinfo/cvs-all>,
+	<mailto:cvs-all-request@freebsd.org?subject=subscribe>
+X-List-Received-Date: Tue, 26 Aug 2003 21:14:17 -0000
+
+marcus      2003/08/26 14:14:16 PDT
+
+  FreeBSD ports repository
+
+  Modified files:
+    www/epiphany         Makefile distinfo pkg-plist 
+  Log:
+  Update to 0.9.2.
+  
+  Revision  Changes    Path
+  1.18      +2 -2      ports/www/epiphany/Makefile
+  1.12      +1 -1      ports/www/epiphany/distinfo
+  1.11      +6 -0      ports/www/epiphany/pkg-plist
