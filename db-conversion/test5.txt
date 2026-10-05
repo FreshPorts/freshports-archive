@@ -1,0 +1,5 @@
+doc
+doc/de_DE.ISO_8859-1
+doc/de_DE.ISO_8859-1/books
+doc/de_DE.ISO_8859-1/books/handbook
+doc/de_DE.ISO_8859-1/books/handbook/backups
